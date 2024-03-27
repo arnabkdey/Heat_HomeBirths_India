@@ -20,10 +20,9 @@ if (!dir.exists("./outputs/descriptives/")) {
 varlist_ses <- c("mat_age", "mat_age_grp_at_birth", "mat_edu_level", "hh_caste_club", "hh_religion_bi", 
                   "hh_wealth_quintile_ru_og", "rural", "clim_zone_short", "year_birth_fac")
 
-varlist_exp_wb_ntile <- c("hotday_85_wb", "hw_85_wb_2d", "hw_85_wb_3d", "hw_85_wb_5d", "hotday_90_wb", 
-                    "hw_90_wb_2d", "hw_90_wb_3d", "hw_90_wb_5d", "hotday_95_wb", "hw_95_wb_2d", 
-                    "hw_95_wb_3d", "hw_95_wb_5d", "hotday_97_wb", "hw_97_wb_2d", "hw_97_wb_3d",
-                    "hw_97_wb_5d", "hotday_99_wb", "hw_99_wb_2d", "hw_99_wb_3d", "hw_99_wb_5d")
+varlist_exp_wb_ntile <- c("hotday_90_wb", "hw_90_wb_2d", "hw_90_wb_3d", "hw_90_wb_5d", 
+                        "hotday_95_wb", "hw_95_wb_2d", "hw_95_wb_3d", "hw_95_wb_5d", 
+                        "hotday_97_wb", "hw_97_wb_2d", "hw_97_wb_3d", "hw_97_wb_5d")
 
 varlist_exp_wb_abs <- c("hotday_28_wb", "hw_28_wb_2d", "hw_28_wb_3d", "hw_28_wb_5d",
                     "hotday_30_wb", "hw_30_wb_2d", "hw_30_wb_3d", "hw_30_wb_5d",
@@ -50,7 +49,6 @@ tabyl(df_paper_final, year_birth_fac)
 ### View(table1)
 ## Save output
 openxlsx::write.xlsx(table1, file = "./outputs/descriptives/table1.xlsx")
-
 
 # Table-2 ----
 ## Table 2a: based on ntiles
