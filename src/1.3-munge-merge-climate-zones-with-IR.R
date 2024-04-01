@@ -5,14 +5,16 @@
 library(tidyverse)
 library(data.table)
 library(fst)
+library(here)
+
 ## Read datasets ----- 
 ### IR vars created datasets -----
 rm(list = ls())
-file_path_IR <- "./data/processed-data/1.1-dhs-IR-vars-created.fst"
+file_path_IR <- here("data", "processed-data", "1.1-dhs-IR-vars-created.fst")
 df_IR_long <- read_fst(file_path_IR, as.data.table = TRUE)
 
 ## Climate zones of India with districts dataset
-file_path_zones <- "./data/processed-data/1.2-india-dist-climate-zones.fst"
+file_path_zones <- here("data", "processed-data", "1.2-india-dist-climate-zones.fst")
 df_zones <- read_fst(file_path_zones, as.data.table = TRUE)
 
 # Merge climate zones into IR dataset  ----
@@ -44,10 +46,10 @@ df_IR_long_w_zones <- merge(df_IR_long, df_zones,
 
 # Save output ----
 ## Check if the directory exists and create if not
-if (!dir.exists("./data/processed-data/")) {
+if (!dir.exists(here("data", "processed-data"))) {
   # Create the directory if it does not exist
-  dir.create("./data/processed-data/", showWarnings = TRUE, recursive = TRUE)
+  dir.create(here("data", "processed-data"), showWarnings = TRUE, recursive = TRUE)
 }
 
 ## Save the file
-write_fst(df_IR_long_w_zones, path = "./data/processed-data/1.3-dhs-IR-vars-climate-zones.fst")
+write_fst(df_IR_long_w_zones, path = here("data", "processed-data", "1.3-dhs-IR-vars-climate-zones.fst"))

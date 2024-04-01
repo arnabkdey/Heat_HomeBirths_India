@@ -5,7 +5,7 @@
 #https://www.nature.com/articles/sdata2018214#data-records
 
 # Load Libraries ---- 
-pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, lme4, broom, broom.mixed, googledrive)
+pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, lme4, broom, broom.mixed, googledrive, here)
 pacman::p_load(sf, sp, raster, terra, tidyterra, ncdf4, rnaturalearth)
 library(smoothr)
 library(tiff)
@@ -15,9 +15,10 @@ library(rdhs)
 
 # Step-0: Download the Beck_KG climate zone files from Google Drive to local files ----
 ## Create a local folder to download files
-if (!dir.exists("./data/gdrive_temp_files_input/Beck_KG_files")) {
+
+if (!dir.exists(here("data", "gdrive_temp_files_input", "Beck_KG_files"))) {
   # Create the directory if it does not exist
-  dir.create("./data/gdrive_temp_files_input/Beck_KG_files", showWarnings = TRUE, recursive = TRUE)
+  dir.create(here("data", "gdrive_temp_files_input", "Beck_KG_files"), showWarnings = TRUE, recursive = TRUE)
 }
 
 ## List all files in the Google Drive folder
@@ -25,10 +26,11 @@ folder_id_clim_zones <- "1hTtzU4LtzE4mHBKcaOuZlgeFmDSgewe5"
 files_clim_zone <- googledrive::drive_ls(as_id(folder_id_clim_zones)) |> filter(str_detect(name, "Beck_KG_V1_present_0p0083"))
 
 ## Download the relevant file to the local folder
-drive_download(as_id(files_clim_zone$id), path = paste0("./data/gdrive_temp_files_input/Beck_KG_files/", files_clim_zone$name))
+drive_download(as_id(files_clim_zone$id), 
+  path = paste0(here("data", "gdrive_temp_files_input", "Beck_KG_files"), files_clim_zone$name))
 
 # Step-1: Read and rasterize the downloaded file and extract the climate zones ----
-file <-'./data/gdrive_temp_files_input/Beck_KG_files/Beck_KG_V1_present_0p0083.tif' 
+file <- here("data", "gdrive_temp_files_input", "Beck_KG_files", "Beck_KG_V1_present_0p0083.tif")
 KG.rd <- terra::rast(file)
 plot(KG.rd)
 
@@ -56,25 +58,25 @@ crs_dhs <- terra::crs(sdr_subnational_boundaries2)
 
 ## Check the class of the two objects
 class(KG.rd)
-class(sdr_subnational_boundaries2)
+# class(sdr_subnational_boundaries2)
 
 sdr_raster <- rasterize(sdr_subnational_boundaries2, KG.rd)
-plot(sdr_raster)
+# plot(sdr_raster)
 
 # Mask KG.rd with sdr_raster using a logical approach 
 sdr_logical <- sdr_raster > 0
 masked_KG <- KG.rd * sdr_logical
-plot(masked_KG)
+# plot(masked_KG)
 
 # Step-4: Extract the gridcell values from the spatialbrick
 extracted_values <- extract(x = masked_KG, y = sdr_subnational_boundaries2, method='simple')
-class(extracted_values)
-dim(extracted_values)
-length(unique(extracted_values$ID))
-head(sdr_subnational_boundaries2)
-class(sdr_subnational_boundaries2)
+# class(extracted_values)
+# dim(extracted_values)
+# length(unique(extracted_values$ID))
+# head(sdr_subnational_boundaries2)
+# class(sdr_subnational_boundaries2)
+# length(unique(sdr_subnational_boundaries2$REGCODE))
 
-length(unique(sdr_subnational_boundaries2$REGCODE))
 # Step-5: Merge the two datasets
 ## Pick up from here
 df_zones <- sdr_subnational_boundaries2 |> 
@@ -84,11 +86,11 @@ df_zones <- sdr_subnational_boundaries2 |>
                 
 
 rd0 <- raster::extract(x = cd2, y = sdr_subnational_boundaries2, method='simple')
-summary(rd0)
-class(rd0)
-head(rd0)
-length(rd0)
-nrow(sdr_subnational_boundaries2)
+# summary(rd0)
+# class(rd0)
+# head(rd0)
+# length(rd0)
+# nrow(sdr_subnational_boundaries2)
 
 rd1 <- mapply(cbind, extracted_values, state.name=sdr_subnational_boundaries2$OTHREGNA, district.name = sdr_subnational_boundaries2$REGNAME, district.code = sdr_subnational_boundaries2$REGCODE)
 
@@ -155,11 +157,10 @@ df_zones <- df_zones |>
 
 # Step-11: Save dataset with districts and climate zones for India
 ## Check if the directory exists and create if not
-if (!dir.exists("./data/processed-data/")) {
+if (!dir.exists(here("data", "processed-data"))) {
   # Create the directory if it does not exist
-  dir.create("./data/processed-data/", showWarnings = TRUE, recursive = TRUE)
+  dir.create(here("data", "processed-data"), showWarnings = TRUE, recursive = TRUE)
 }
 
 ## Save the file
-write_fst(df_zones, path = "./data/processed-data/1.2-india-dist-climate-zones.fst")
-
+write_fst(df_zones, path = here("data", "processed-data", "1.2-india-dist-climate-zones.fst"))

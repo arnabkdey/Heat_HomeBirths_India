@@ -27,7 +27,6 @@ index_caste <- grep("caste", model_names)
 index_religion <- grep("religion", model_names)
 index_wealth <- grep("wealth", model_names)
 index_lt_tmax <- grep("lt_tmax", model_names)
-index_year <- grep("year", model_names)
 
 # Extract multcomp objects for each Effect Modifier -----
 ## For Rural ----
@@ -42,14 +41,14 @@ for (i in index_rural) {
     # sum_model_cur <- summary(model_cur)
     # nrow <- nrow(sum_model_cur$coefficients)
     # print(nrow)
-    # a = num of coefficients- 36
+    # a = num of coefficients- 32
     # b = number of levels of the effect modifier- 2
     # c = number of trailing elements after rep- b - 1 = 1
-    # Total number of times zero has to be repeated- a - c - 2 = 33
+    # Total number of times zero has to be repeated- a - c - 2 = 29
     # Levels- Rural, Urban
-    contrast_cur <- rbind("Rural" = c(0, 1, rep(0, 33), 1),
-                    "Urban" = c(0, 1, rep(0, 33), 0), 
-                    "Rural vs Urban" = c(0, 0, rep(0, 33), 1))
+    contrast_cur <- rbind("Rural" = c(0, 1, rep(0, 29), 1),
+                    "Urban" = c(0, 1, rep(0, 29), 0), 
+                    "Rural vs Urban" = c(0, 0, rep(0, 29), 1))
     # names(model_cur) <- names(model_int_all[[i]])
     # print(names(model_cur))
     glht_cur <- glht(model_cur, linfct = contrast_cur)
@@ -72,21 +71,21 @@ for (i in index_caste) {
     # sum_model_cur <- summary(model_cur)
     # nrow <- nrow(sum_model_cur$coefficients)
     # print(nrow)
-    # a = num of coefficients- 38
+    # a = num of coefficients- 34
     # b = number of levels of the effect modifier- 4
     # c = number of trailing elements after rep- b - 1 = 3
-    # Total number of times zero has to be repeated- a - c - 2 = 33
+    # Total number of times zero has to be repeated- a - c - 2 = 29
     # Levels- OBC, Other, SC, ST
-    contrast_cur <- rbind("OBC" = c(0, 1, rep(0, 33), 0, 0, 0),
-                    "Other" = c(0, 1, rep(0, 33), 1, 0, 0), 
-                    "SC" = c(0, 1, rep(0, 33), 0, 1, 0), 
-                    "ST" = c(0, 1, rep(0, 33), 0, 0, 1),
-                    "OBC vs Other" = c(0, 0, rep(0, 33), 1, 0, 0),
-                    "OBC vs SC" = c(0, 0, rep(0, 33), 0, 1, 0),
-                    "OBC vs ST" = c(0, 0, rep(0, 33), 0, 0, 1),
-                    "Other vs SC" = c(0, 0, rep(0, 33), -1, 1, 0),
-                    "Other vs ST" = c(0, 0, rep(0, 33), -1, 0, 1),
-                    "SC vs ST" = c(0, 0, rep(0, 33), 0, -1, 1))
+    contrast_cur <- rbind("OBC" = c(0, 1, rep(0, 29), 0, 0, 0),
+                    "Other" = c(0, 1, rep(0, 29), 1, 0, 0), 
+                    "SC" = c(0, 1, rep(0, 29), 0, 1, 0), 
+                    "ST" = c(0, 1, rep(0, 29), 0, 0, 1),
+                    "OBC vs Other" = c(0, 0, rep(0, 29), 1, 0, 0),
+                    "OBC vs SC" = c(0, 0, rep(0, 29), 0, 1, 0),
+                    "OBC vs ST" = c(0, 0, rep(0, 29), 0, 0, 1),
+                    "Other vs SC" = c(0, 0, rep(0, 29), -1, 1, 0),
+                    "Other vs ST" = c(0, 0, rep(0, 29), -1, 0, 1),
+                    "SC vs ST" = c(0, 0, rep(0, 29), 0, -1, 1))
     glht_cur <- glht(model_cur, linfct = contrast_cur)
     tab_cur <- tidy(glht_cur, conf.int = FALSE)
     list_caste[[name_cur]] <- tab_cur
@@ -108,14 +107,14 @@ for (i in index_religion) {
     # sum_model_cur <- summary(model_cur)
     # nrow <- nrow(sum_model_cur$coefficients)
     # print(nrow)
-    # a. num of coefficients- 36
+    # a. num of coefficients- 32
     # b. number of levels of the effect modifier- 2
     # c. number of trailing elements after rep- b - 1 = 1
-    # Total number of times zero has to be repeated- a - c - 2 = 33
+    # Total number of times zero has to be repeated- a - c - 2 = 29
     # Levels- Hindu, Not-Hindu
-    contrast_cur <- rbind("Hindu" = c(0, 1, rep(0, 33), 0),
-                    "Not-Hindu" = c(0, 1, rep(0, 33), 1), 
-                    "Hindu vs Not-Hindu" = c(0, 0, rep(0, 33), 1))
+    contrast_cur <- rbind("Hindu" = c(0, 1, rep(0, 29), 0),
+                    "Not-Hindu" = c(0, 1, rep(0, 29), 1), 
+                    "Hindu vs Not-Hindu" = c(0, 0, rep(0, 29), 1))
     glht_cur <- glht(model_cur, linfct = contrast_cur)
     tab_cur <- tidy(glht_cur, conf.int = FALSE)
     list_rel[[name_cur]] <- tab_cur
@@ -137,26 +136,26 @@ for (i in index_wealth) {
     # sum_model_cur <- summary(model_cur)
     # nrow <- nrow(sum_model_cur$coefficients)
     # print(nrow)
-    # a. num of coefficients- 39
+    # a. num of coefficients- 35
     # b. number of levels of the effect modifier- 5
     # c. number of trailing elements after rep- b - 1 = 4
-    # Total number of times zero has to be repeated- a - c - 2 = 33
+    # Total number of times zero has to be repeated- a - c - 2 = 29
     # Levels- Poorest, Poorer, Middle, Richer, Richest
-    contrast_cur <- rbind("Poorest" = c(0, 1, rep(0, 33), 0, 0, 0, 0),
-                    "Poorer" = c(0, 1, rep(0, 33), 1, 0, 0, 0), 
-                    "Middle" = c(0, 1, rep(0, 33), 0, 1, 0, 0), 
-                    "Richer" = c(0, 1, rep(0, 33), 0, 0, 1, 0),
-                    "Richest" = c(0, 1, rep(0, 33), 0, 0, 0, 1),
-                    "Poorest vs Poorer" = c(0, 0, rep(0, 33), 1, 0, 0, 0),
-                    "Poorest vs Middle" = c(0, 0, rep(0, 33), 0, 1, 0, 0),
-                    "Poorest vs Richer" = c(0, 0, rep(0, 33), 0, 0, 1, 0),
-                    "Poorest vs Richest" = c(0, 0, rep(0, 33), 0, 0, 0, 1),
-                    "Poorer vs Middle" = c(0, 0, rep(0, 33), -1, 1, 0, 0),
-                    "Poorer vs Richer" = c(0, 0, rep(0, 33), -1, 0, 1, 0),
-                    "Poorer vs Richest" = c(0, 0, rep(0, 33), -1, 0, 0, 1),
-                    "Middle vs Richer" = c(0, 0, rep(0, 33), 0, -1, 1, 0),
-                    "Middle vs Richest" = c(0, 0, rep(0, 33), 0, -1, 0, 1),
-                    "Richer vs Richest" = c(0, 0, rep(0, 33), 0, 0, -1, 1))
+    contrast_cur <- rbind("Poorest" = c(0, 1, rep(0, 29), 0, 0, 0, 0),
+                    "Poorer" = c(0, 1, rep(0, 29), 1, 0, 0, 0), 
+                    "Middle" = c(0, 1, rep(0, 29), 0, 1, 0, 0), 
+                    "Richer" = c(0, 1, rep(0, 29), 0, 0, 1, 0),
+                    "Richest" = c(0, 1, rep(0, 29), 0, 0, 0, 1),
+                    "Poorest vs Poorer" = c(0, 0, rep(0, 29), 1, 0, 0, 0),
+                    "Poorest vs Middle" = c(0, 0, rep(0, 29), 0, 1, 0, 0),
+                    "Poorest vs Richer" = c(0, 0, rep(0, 29), 0, 0, 1, 0),
+                    "Poorest vs Richest" = c(0, 0, rep(0, 29), 0, 0, 0, 1),
+                    "Poorer vs Middle" = c(0, 0, rep(0, 29), -1, 1, 0, 0),
+                    "Poorer vs Richer" = c(0, 0, rep(0, 29), -1, 0, 1, 0),
+                    "Poorer vs Richest" = c(0, 0, rep(0, 29), -1, 0, 0, 1),
+                    "Middle vs Richer" = c(0, 0, rep(0, 29), 0, -1, 1, 0),
+                    "Middle vs Richest" = c(0, 0, rep(0, 29), 0, -1, 0, 1),
+                    "Richer vs Richest" = c(0, 0, rep(0, 29), 0, 0, -1, 1))
     glht_cur <- glht(model_cur, linfct = contrast_cur)
     tab_cur <- tidy(glht_cur, conf.int = FALSE)
     list_wealth[[name_cur]] <- tab_cur
@@ -165,7 +164,6 @@ for (i in index_wealth) {
 ### Save to excel ----
 sheet_names_wealth <- names(model_int_all[index_wealth])
 write.xlsx(list_wealth, paste0(path_out, "multcomp-cis-wealth.xlsx"), sheetName = sheet_names_wealth)
-
 
 ## For lt_tmax ----
 ### Run loop to extract multcomp objects ----
@@ -179,17 +177,17 @@ for (i in index_lt_tmax) {
     # sum_model_cur <- summary(model_cur)
     # nrow <- nrow(sum_model_cur$coefficients)
     # print(nrow)
-    # a. num of coefficients- 37
+    # a. num of coefficients- 33
     # b. number of levels of the effect modifier- 3
     # c. number of trailing elements after rep- b - 1 = 2
-    # Total number of times zero has to be repeated- a - c - 2 = 33
+    # Total number of times zero has to be repeated- a - c - 2 = 29
     # Levels- Lowest_Tertile, Medium_Tertile, High_Tertile
-    contrast_cur <- rbind("Lowest_Tertile" = c(0, 1, rep(0, 33), 0, 0),
-                    "Medium_Tertile" = c(0, 1, rep(0, 33), 1, 0), 
-                    "High_Tertile" = c(0, 1, rep(0, 33), 0, 1),
-                    "Lowest_Tertile vs Medium_Tertile" = c(0, 0, rep(0, 33), 1, 0),
-                    "Lowest_Tertile vs High_Tertile" = c(0, 0, rep(0, 33), 0, 1),
-                    "Medium_Tertile vs High_Tertile" = c(0, 0, rep(0, 33), -1, 1))
+    contrast_cur <- rbind("Lowest_Tertile" = c(0, 1, rep(0, 29), 0, 0),
+                    "Medium_Tertile" = c(0, 1, rep(0, 29), 1, 0), 
+                    "High_Tertile" = c(0, 1, rep(0, 29), 0, 1),
+                    "Lowest_Tertile vs Medium_Tertile" = c(0, 0, rep(0, 29), 1, 0),
+                    "Lowest_Tertile vs High_Tertile" = c(0, 0, rep(0, 29), 0, 1),
+                    "Medium_Tertile vs High_Tertile" = c(0, 0, rep(0, 29), -1, 1))
     glht_cur <- glht(model_cur, linfct = contrast_cur)
     tab_cur <- tidy(glht_cur, conf.int = FALSE)
     list_lt_tmax[[name_cur]] <- tab_cur                    

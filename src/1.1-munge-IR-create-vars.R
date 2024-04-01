@@ -1,13 +1,13 @@
 # title: "Create variables for the IR dataset"
 
 ## load-packages
-pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, lme4, broom, broom.mixed, googledrive)
+pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, lme4, broom, broom.mixed, googledrive, here)
 
 # Step-0: Download DHS files from Google Drive to local files ----
 ## Create a local folder to download files
-if (!dir.exists("./data/gdrive_temp_files_input/dhs_india_IR")) {
+if (!dir.exists(here("data", "gdrive_temp_files_input", "dhs_india_IR"))) {
   # Create the directory if it does not exist
-  dir.create("./data/gdrive_temp_files_input/dhs_india_IR", showWarnings = TRUE, recursive = TRUE)
+  dir.create(here("data", "gdrive_temp_files_input", "dhs_india_IR"), showWarnings = TRUE, recursive = TRUE)
 }
 
 ## List all files in the Google Drive folder
@@ -17,7 +17,8 @@ file_id_dta <- files_dhs_india_IR %>% dplyr::filter(str_detect(name, ".DTA")) %>
 file_name_dta <- files_dhs_india_IR %>% dplyr::filter(str_detect(name, ".DTA")) %>% dplyr::pull(name)
 
 ## Download the relevant file to the local folder
-drive_download(as_id(file_id_dta), path = paste0("./data/gdrive_temp_files_input/dhs_india_IR/", file_name_dta))
+drive_download(as_id(file_id_dta), 
+                path = paste0(here("data", "gdrive_temp_files_input", "dhs_india_IR"), file_name_dta))
 
 ## Step-1: Identify variables for the paper
 ### Meta
@@ -32,7 +33,7 @@ varlist_birth_history <- c(c(paste0("bidx_0",c(1:9))),
 ### Maternal Healthcare Utilization
 varlist_mat_health_utiliz <- c(
 							"m15_1", "m15_2", "m15_3",
-                            "m15_4", "m15_5", "m15_6", 
+              "m15_4", "m15_5", "m15_6", 
 							"m61_1", "m61_2", "m61_3", 
 							"m61_4","m61_5", "m61_6",
 							"m62_1", "m62_2", "m62_3", 
@@ -56,8 +57,9 @@ varlist_select <- c(varlist_meta, varlist_birth_history, varlist_mat_health_util
 
 ## Step-2: Read the data
 ### Load raw dataset
-df_dhs_IR_raw <- haven::read_dta("./data/gdrive_temp_files_input/dhs_india_IR/IAIR7EFL.DTA",
+df_dhs_IR_raw <- haven::read_dta(here("data", "gdrive_temp_files_input", "dhs_india_IR", file_name_dta),
                     col_select = all_of(varlist_select))
+
 ### Convert to factors
 df_dhs_IR_raw <- as_factor(df_dhs_IR_raw) 
 df_dhs_IR_raw_dt <- setDT(df_dhs_IR_raw)
@@ -229,11 +231,10 @@ df_IR_long <- df_IR_long[, wt_final := wt_raw / 1000000]
 ## Step-4: Save datafile
 
 ### Check if the directory exists and create if not
-if (!dir.exists("./data/processed-data/")) {
+if (!dir.exists(here("data", "processed-data"))) {
   # Create the directory if it does not exist
-  dir.create("./data/processed-data/", showWarnings = TRUE, recursive = TRUE)
+  dir.create(here("data", "processed-data"), showWarnings = TRUE, recursive = TRUE)
 }
 
 ### Save the file
-write_fst(df_IR_long, path = "./data/processed-data/1.1-dhs-IR-vars-created.fst")
-
+write_fst(df_IR_long, path = here("data", "processed-data", "1.1-dhs-IR-vars-created.fst"))

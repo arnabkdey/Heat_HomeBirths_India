@@ -3,7 +3,7 @@
 ####### This script reads the geocoded PSU data from DHS and extracts daily gridded climate data for the past n years for each PSU. The result is a HUGE dataset where each PSU has n\*365 rows of data, where n is the number of years of climate data available.
 
 # Load Packages ----
-pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, lme4, broom, broom.mixed, googledrive)
+pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, lme4, broom, broom.mixed, googledrive, here)
 pacman::p_load(sf, sp, raster, terra, tidyterra, ncdf4, rnaturalearth)
 
 # Step-0: Download raw temperature datasets ----

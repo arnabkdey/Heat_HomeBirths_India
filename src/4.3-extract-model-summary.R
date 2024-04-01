@@ -1,6 +1,7 @@
 # Library ----
 pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, lme4, broom, broom.mixed, googledrive)
 library(performance)
+rm(list = ls())
 
 # Create a folder for the outputs ----
 if (!dir.exists("./outputs/models/models-no-interaction/")) {
@@ -10,7 +11,6 @@ if (!dir.exists("./outputs/models/models-no-interaction/")) {
 path_out <- "./outputs/models/models-no-interaction/"
 
 # Load models ----
-rm(list = ls())
 model_outputs <- readRDS("./data/processed-data/4.2-models-no-interaction.rds")
 print("finished loading models")
 names(model_outputs)
