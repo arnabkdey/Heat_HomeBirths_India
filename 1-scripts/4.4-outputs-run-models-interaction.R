@@ -3,17 +3,12 @@ pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, lme4, broom
 library(parallel)
 library(doParallel)
 library(foreach)
-
-# Create a folder for the output
-if (!dir.exists("./data/processed-data/")) {
-  # Create the directory if it does not exist
-  dir.create("./data/processed-data/", showWarnings = TRUE, recursive = TRUE)
-}
+rm(list = ls())
 
 # Read datasets ----
-rm(list = ls())
 ## Final paper dataset
-df_paper_final <- readRDS("./data/processed-data/3.1-final-data-for-paper.rds")
+path_processed <- here("2-data", "2.2-processed-data")
+df_paper_final <- readRDS(here(path_processed, "3.1-final-data-for-paper.rds"))
 print("finished loading")
 print(Sys.time())
 
@@ -74,6 +69,6 @@ model_outputs <- foreach(fmla = formulas_list, .combine = c) %dopar% {
 names(model_outputs) <- substr(names(formulas_list), 1, 30)
 
 # Save the list as an RDS object
-saveRDS(model_outputs, "./data/processed-data/4.4-models-all-interactions.rds")
+saveRDS(model_outputs, here(path_processed, "4.4-models-all-interactions.rds"))
 print("finished saving all models")
 print(Sys.time())

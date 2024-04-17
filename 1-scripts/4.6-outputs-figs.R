@@ -25,11 +25,12 @@ read_excel_sheets_and_combine <- function(file_path, effect_modifier_name) {
 }
 
 # Run the function for all the effect modifiers ----
-caste <- read_excel_sheets_and_combine(here("outputs", "models", "models-with-interaction", "multcomp-cis-caste.xlsx"), "Caste")
-religion <- read_excel_sheets_and_combine(here("outputs", "models", "models-with-interaction", "multcomp-cis-religion.xlsx"), "Religion")
-residence <- read_excel_sheets_and_combine(here("outputs", "models", "models-with-interaction", "multcomp-cis-rural.xlsx"), "Residence")
-wealth <- read_excel_sheets_and_combine(here("outputs", "models", "models-with-interaction", "multcomp-cis-wealth.xlsx"), "Wealth")
-lt_tmax <- read_excel_sheets_and_combine(here("outputs", "models", "models-with-interaction", "multcomp-cis-lt_tmax.xlsx"), "Long-term temperature tertile")
+here_output_files <- here("3-output", "models", "models-with-interaction")
+caste <- read_excel_sheets_and_combine(here(here_output_files, "multcomp-cis-caste.xlsx"), "Caste")
+religion <- read_excel_sheets_and_combine(here(here_output_files, "multcomp-cis-religion.xlsx"), "Religion")
+residence <- read_excel_sheets_and_combine(here(here_output_files, "multcomp-cis-rural.xlsx"), "Residence")
+wealth <- read_excel_sheets_and_combine(here(here_output_files, "multcomp-cis-wealth.xlsx"), "Wealth")
+lt_tmax <- read_excel_sheets_and_combine(here(here_output_files, "multcomp-cis-lt_tmax.xlsx"), "Long-term temperature tertile")
 
 # Process data for plots ----
 ## Combine all the data ----
@@ -173,11 +174,12 @@ plot_effectMod_all <- ggarrange(plot_effMod_absTmp, plot_effMod_relTmp, align = 
 
 # Save plot ----
 ## Create directory -----
-if (!dir.exists("./outputs/figures/")) {
+path_fig_out <- here("3-outputs", "figures")
+if (!dir.exists(path_fig_out)) {
   # Create the directory if it does not exist
-  dir.create("./outputs/figures/", showWarnings = TRUE, recursive = TRUE)
+  dir.create(path_fig_out, showWarnings = TRUE, recursive = TRUE)
 }
 
 ## Save the plot
-ggsave(here("outputs", "figures", "plot_effect_mod_comb.svg"), 
+ggsave(here(path_fig_out, "plot_effect_mod_comb.svg"), 
   plot_effectMod_all, width = 55, height = 40, units = "cm", dpi = 1000)

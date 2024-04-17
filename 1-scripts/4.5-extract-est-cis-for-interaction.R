@@ -4,15 +4,15 @@ library(multcomp)
 rm(list = ls())
 
 # Create a folder for the outputs ----
-if (!dir.exists("./outputs/models/models-with-interaction/")) {
+path_out <- here("3-outputs", "models", "models-with-interaction")
+if (!dir.exists(path_out)) {
   # Create the directory if it does not exist
-  dir.create("./outputs/models/models-with-interaction/", showWarnings = TRUE, recursive = TRUE)
+  dir.create(path_out, showWarnings = TRUE, recursive = TRUE)
 }
 
-path_out <- "./outputs/models/models-with-interaction/"
-
 # Load models ----
-model_int_all <- readRDS("./data/processed-data/4.4-models-all-interactions.rds")
+path_processed <- here("2-data", "2.2-processed-data")
+model_int_all <- readRDS(here(path_processed, "4.4-models-all-interactions.rds"))
 print("finished loading models")
 model_names <- names(model_int_all)
 
@@ -58,7 +58,7 @@ for (i in index_rural) {
 
 ### Save to excel ----
 sheet_names_rural <- names(model_int_all[index_rural])
-write.xlsx(list_rural, paste0(path_out, "multcomp-cis-rural.xlsx"), sheetName = sheet_names_rural)
+write.xlsx(list_rural, here(path_out, "multcomp-cis-rural.xlsx"), sheetName = sheet_names_rural)
 
 ## For Caste ----
 ### Run loop to extract multcomp objects ----
@@ -93,7 +93,7 @@ for (i in index_caste) {
 
 ### Save to excel ----
 sheet_names_caste <- names(model_int_all[index_caste])
-write.xlsx(list_caste, paste0(path_out, "multcomp-cis-caste.xlsx"), sheetName = sheet_names_caste)
+write.xlsx(list_caste, here(path_out, "multcomp-cis-caste.xlsx"), sheetName = sheet_names_caste)
 
 ## For Religion ----
 ### Run loop to extract multcomp objects ----
@@ -122,7 +122,7 @@ for (i in index_religion) {
 
 ### Save to excel ----
 sheet_names_rel <- names(model_int_all[index_religion])
-write.xlsx(list_rel, paste0(path_out, "multcomp-cis-religion.xlsx"), sheetName = sheet_names_rel)
+write.xlsx(list_rel, here(path_out, "multcomp-cis-religion.xlsx"), sheetName = sheet_names_rel)
 
 ## For Wealth ----
 ### Run loop to extract multcomp objects ----
@@ -163,7 +163,7 @@ for (i in index_wealth) {
 
 ### Save to excel ----
 sheet_names_wealth <- names(model_int_all[index_wealth])
-write.xlsx(list_wealth, paste0(path_out, "multcomp-cis-wealth.xlsx"), sheetName = sheet_names_wealth)
+write.xlsx(list_wealth, here(path_out, "multcomp-cis-wealth.xlsx"), sheetName = sheet_names_wealth)
 
 ## For lt_tmax ----
 ### Run loop to extract multcomp objects ----
@@ -195,5 +195,4 @@ for (i in index_lt_tmax) {
 
 ### Save to excel ----
 sheet_names_lt_tmax <- names(model_int_all[index_lt_tmax])
-write.xlsx(list_lt_tmax, paste0(path_out, "multcomp-cis-lt_tmax.xlsx"), sheetName = sheet_names_lt_tmax)
-
+write.xlsx(list_lt_tmax, here(path_out, "multcomp-cis-lt_tmax.xlsx"), sheetName = sheet_names_lt_tmax)

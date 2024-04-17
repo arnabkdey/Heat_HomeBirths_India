@@ -7,15 +7,11 @@ library(foreach)
 # Read datasets ----
 rm(list = ls())
 ## Final paper dataset
-df_paper_final <- readRDS("./data/processed-data/3.1-final-data-for-paper.rds")
+path_processed <- here("2-data", "2.2-processed-data")
+df_paper_final <- readRDS(here(path_processed, "3.1-final-data-for-paper.rds"))
 print("finished loading")
 print(Sys.time())
 
-# Create a folder for the output
-if (!dir.exists("./data/processed-data/")) {
-  # Create the directory if it does not exist
-  dir.create("./data/processed-data/", showWarnings = TRUE, recursive = TRUE)
-}
 
 # Specify varlist, formulas, and stratified datasets ----
 ## Combination of varlists -----
@@ -29,8 +25,8 @@ varlist_exp_wb_ntile <- c("hotday_90_wb", "hw_90_wb_2d", "hw_90_wb_3d", "hw_90_w
                           "hotday_95_wb", "hw_95_wb_2d", "hw_95_wb_3d", "hw_95_wb_5d", 
                           "hotday_97_wb", "hw_97_wb_2d", "hw_97_wb_3d", "hw_97_wb_5d")
 
-varlist_exp_wb_abs <- c("hotday_28_wb", "hw_28_wb_2d", "hw_28_wb_3d", "hw_28_wb_5d",
-                    "hotday_30_wb", "hw_30_wb_2d", "hw_30_wb_3d", "hw_30_wb_5d",
+varlist_exp_wb_abs <- c("hotday_30_wb", "hw_30_wb_2d", "hw_30_wb_3d", "hw_30_wb_5d",
+                    "hotday_31_wb", "hw_31_wb_2d", "hw_31_wb_3d", "hw_31_wb_5d",
                     "hotday_32_wb", "hw_32_wb_2d", "hw_32_wb_3d", "hw_32_wb_5d")
 
 varlist_exp_wb_all <- c(varlist_exp_wb_ntile, varlist_exp_wb_abs)
@@ -64,6 +60,6 @@ names(models_first_set) <- varlist_exp_wb_all
 all_model_outputs <- models_first_set
 
 # Save the list as an RDS object
-saveRDS(all_model_outputs, "./data/processed-data/4.2-models-no-interaction.rds")
+saveRDS(all_model_outputs, here(path_processed, "4.2-models-no-interaction.rds"))
 print("Finished saving all models")
 print(Sys.time())

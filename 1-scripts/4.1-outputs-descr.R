@@ -1,19 +1,22 @@
 # Libraries ----
-pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, lme4, broom, broom.mixed)
+pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, lme4, broom, broom.mixed, here)
 library(survey)
+rm(list = ls())
 
 # Load datasets ----
-rm(list = ls())
-df_paper_final <- readRDS("./data/processed-data/3.1-final-data-for-paper.rds")
-# Function for weighted tables ----
-function_path <- "./src/5.3-function-wtd-comparegroups.R"
+path_processed <- here("2-data", "2.2-processed-data")
+df_paper_final <- readRDS(here(path_processed, "3.1-final-data-for-paper.rds"))
+
+# Load function for weighted tables ----
+function_path <- here("src", "5.3-function-wtd-comparegroups.R")
 source(function_path)
 ls()
 
 # Create a folder for the output
-if (!dir.exists("./outputs/descriptives/")) {
+path_output <- here("3-outputs", "descriptives")
+if (!dir.exists(path_output)) {
   # Create the directory if it does not exist
-  dir.create("./outputs/descriptives/", showWarnings = TRUE, recursive = TRUE)
+  dir.create(path_output, showWarnings = TRUE, recursive = TRUE)
 }
 
 # Create list of variables
@@ -48,7 +51,7 @@ table1 <- compareGroups_wtd(data = df_paper_final,
 tabyl(df_paper_final, year_birth_fac)
 ### View(table1)
 ## Save output
-openxlsx::write.xlsx(table1, file = "./outputs/descriptives/table1.xlsx")
+openxlsx::write.xlsx(table1, file = here(path_output, "table1.xlsx"))
 
 # Table-2 ----
 ## Table 2a: based on ntiles
@@ -68,7 +71,8 @@ table2b <- compareGroups_wtd(data = df_paper_final,
 ## Save output
 list_tables <- list(table2a, table2b)
 list_sheets <- c("table2a", "table2b")
-openxlsx::write.xlsx(list_tables, file = "./outputs/descriptives/table2.xlsx", 
+
+openxlsx::write.xlsx(list_tables, file = here(path_output, "table2.xlsx"), 
                       sheetNames = list_sheets)
 
 # Get denominators for the outcome and other variables  ----

@@ -5,7 +5,7 @@ library(googledrive)
 folder_id_upload <- "1GYSlxfAmLWQzzu3vLCkW2gcPwUU6A9xD"
 
 ## List all processed files
-file_list <- list.files("./data/processed-data/", full.names = TRUE)
+file_list <- list.files("./2-data/2.2-processed-data/", full.names = TRUE)
 
 ## Write a loop to upload all files 
 for (file in file_list) {

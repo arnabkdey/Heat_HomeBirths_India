@@ -13,24 +13,9 @@ library(rasterVis)
 library(tmap)
 library(rdhs)
 
-# Step-0: Download the Beck_KG climate zone files from Google Drive to local files ----
-## Create a local folder to download files
-
-if (!dir.exists(here("data", "gdrive_temp_files_input", "Beck_KG_files"))) {
-  # Create the directory if it does not exist
-  dir.create(here("data", "gdrive_temp_files_input", "Beck_KG_files"), showWarnings = TRUE, recursive = TRUE)
-}
-
-## List all files in the Google Drive folder
-folder_id_clim_zones <- "1hTtzU4LtzE4mHBKcaOuZlgeFmDSgewe5"
-files_clim_zone <- googledrive::drive_ls(as_id(folder_id_clim_zones)) |> filter(str_detect(name, "Beck_KG_V1_present_0p0083"))
-
-## Download the relevant file to the local folder
-drive_download(as_id(files_clim_zone$id), 
-  path = paste0(here("data", "gdrive_temp_files_input", "Beck_KG_files"), files_clim_zone$name))
 
 # Step-1: Read and rasterize the downloaded file and extract the climate zones ----
-file <- here("data", "gdrive_temp_files_input", "Beck_KG_files", "Beck_KG_V1_present_0p0083.tif")
+file <- here("2-data", "2.1-raw-data", "Beck_KG_files", "Beck_KG_V1_present_0p0083.tif")
 KG.rd <- terra::rast(file)
 plot(KG.rd)
 
@@ -157,10 +142,11 @@ df_zones <- df_zones |>
 
 # Step-11: Save dataset with districts and climate zones for India
 ## Check if the directory exists and create if not
-if (!dir.exists(here("data", "processed-data"))) {
+path_processed_data <- here("2-data", "2.2-processed-data")
+if (!dir.exists(path_processed_data)) {
   # Create the directory if it does not exist
-  dir.create(here("data", "processed-data"), showWarnings = TRUE, recursive = TRUE)
+  dir.create(path_processed_data, showWarnings = TRUE, recursive = TRUE)
 }
 
 ## Save the file
-write_fst(df_zones, path = here("data", "processed-data", "1.2-india-dist-climate-zones.fst"))
+write_fst(df_zones, path = here(path_processed_data "1.2-india-dist-climate-zones.fst"))

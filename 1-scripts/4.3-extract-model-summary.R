@@ -4,14 +4,15 @@ library(performance)
 rm(list = ls())
 
 # Create a folder for the outputs ----
-if (!dir.exists("./outputs/models/models-no-interaction/")) {
+path_out <- here("3-outputs", "models", "models-no-interaction")
+if (!dir.exists(path_out)) {
   # Create the directory if it does not exist
-  dir.create("./outputs/models/models-no-interaction/", showWarnings = TRUE, recursive = TRUE)
+  dir.create(path_out, showWarnings = TRUE, recursive = TRUE)
 }
-path_out <- "./outputs/models/models-no-interaction/"
 
 # Load models ----
-model_outputs <- readRDS("./data/processed-data/4.2-models-no-interaction.rds")
+path_processed <- here("2-data", "2.2-processed-data")
+model_outputs <- readRDS(here(path_processed, "4.2-models-no-interaction.rds"))
 print("finished loading models")
 names(model_outputs)
 
@@ -51,7 +52,7 @@ for(exposure in names(tidy_outputs)) {
 }
 
 ## Write Step-1 output to a file
-saveWorkbook(wb, paste0(path_out, "models_full.xlsx"), overwrite = TRUE)
+saveWorkbook(wb, here(path_out, "models_full.xlsx"), overwrite = TRUE)
 
 
 # Step-2: Consolidate coefficients for the primary exposure  in a single CSV ----
@@ -76,7 +77,7 @@ for(model_name in names(tidy_outputs)) {
 }
 
 ## Save Step-2  output to a CSV ----
-write.csv(combined_exposures, paste0(path_out, "models_consolidated_coefficients.csv"), row.names = FALSE)
+write.csv(combined_exposures, here(path_out, "models_consolidated_coefficients.csv"), row.names = FALSE)
 
 # Step-3: Extract R2 and ICC for models ----
 ## Initialize empty lists ----- 
@@ -112,4 +113,4 @@ df_icc_r2 <- data.frame(
 )
 
 ## Save Step-3 output to a file
-write.csv(df_icc_r2, paste0(path_out, "model_metrics.csv"), row.names = FALSE)
+write.csv(df_icc_r2, here(path_out, "model_metrics.csv"), row.names = FALSE)
