@@ -8,7 +8,7 @@ path_processed <- here("2-data", "2.2-processed-data")
 df_paper_final <- readRDS(here(path_processed, "3.1-final-data-for-paper.rds"))
 
 # Load function for weighted tables ----
-function_path <- here("src", "5.3-function-wtd-comparegroups.R")
+function_path <- here("1-scripts", "5.3-function-wtd-comparegroups.R")
 source(function_path)
 ls()
 
@@ -27,8 +27,8 @@ varlist_exp_wb_ntile <- c("hotday_90_wb", "hw_90_wb_2d", "hw_90_wb_3d", "hw_90_w
                         "hotday_95_wb", "hw_95_wb_2d", "hw_95_wb_3d", "hw_95_wb_5d", 
                         "hotday_97_wb", "hw_97_wb_2d", "hw_97_wb_3d", "hw_97_wb_5d")
 
-varlist_exp_wb_abs <- c("hotday_28_wb", "hw_28_wb_2d", "hw_28_wb_3d", "hw_28_wb_5d",
-                    "hotday_30_wb", "hw_30_wb_2d", "hw_30_wb_3d", "hw_30_wb_5d",
+varlist_exp_wb_abs <- c("hotday_30_wb", "hw_30_wb_2d", "hw_30_wb_3d", "hw_30_wb_5d",
+                    "hotday_31_wb", "hw_31_wb_2d", "hw_31_wb_3d", "hw_31_wb_5d",
                     "hotday_32_wb", "hw_32_wb_2d", "hw_32_wb_3d", "hw_32_wb_5d")
 
 # Convert list of variables to factor -----

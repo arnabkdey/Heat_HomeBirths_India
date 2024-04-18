@@ -11,7 +11,7 @@ rm(list = ls())
 
 # load datasets needed for this script
 path_processed <- here("2-data", "2.2-processed-data")
-df_psu_temp_precip_vars_added <- read_fst(here(path_processed, "2.2-daily-temp-precip-1980-21-extracted-dhs-psu.fst"), as.data.table = T)
+df_psu_temp_precip_vars_added <- read_fst(here(path_processed, "2.1-daily-temp-precip-1980-21-extracted-dhs-psu.fst"), as.data.table = T)
 colnames(df_psu_temp_precip_vars_added)
 print("loading complete")
 print(Sys.time())
@@ -45,7 +45,7 @@ print("step-2-complete")
 print(Sys.time())
 
 # Save Work
-write_fst(df_psu_temp_precip_vars_added, path = here(path_processed, "2.3-daily-clim-vars-long-term-by-day.fst"))
+write_fst(df_psu_temp_precip_vars_added, path = here(path_processed, "2.2-daily-clim-vars-long-term-by-day.fst"))
 
 print("Script 2.3 complete")
 print(Sys.time())

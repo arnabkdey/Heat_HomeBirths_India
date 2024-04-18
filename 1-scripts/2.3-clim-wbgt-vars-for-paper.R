@@ -5,7 +5,7 @@ pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, lme4, broom
 rm(list = ls())
 ## First read the date column
 path_processed <- here("2-data", "2.2-processed-data")
-df_psu_temp_precip_paper <- read_fst(here(path_processed, "2.3-daily-clim-vars-long-term-by-day.fst"), as.data.table = TRUE)
+df_psu_temp_precip_paper <- read_fst(here(path_processed, "2.2-daily-clim-vars-long-term-by-day.fst"), as.data.table = TRUE)
 
 ## Filter cases to 2014 onwards
 df_psu_temp_precip_paper <- df_psu_temp_precip_paper[base::`>=`(df_psu_temp_precip_paper$date, as.Date("2014-01-01")), ]
@@ -86,5 +86,5 @@ print("heatwave vars created")
 print(Sys.time())
 
 # Save dataset ---- 
-write_fst(df_psu_temp_precip_paper, path = here(path_processed, "2.4-dhs-psu-paper.fst"))
-print("All tasks complete for 2.4")
+write_fst(df_psu_temp_precip_paper, path = here(path_processed, "2.3-dhs-psu-paper.fst"))
+print("All tasks complete for 2.3")

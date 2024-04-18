@@ -8,16 +8,16 @@ pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, lme4, broom
 ## Load-datasets -----
 ### IR data ------ 
 path_processed <- here("2-data", "2.2-processed-data")
-df_IR_long_w_zones_dt <- read_fst(here(path_processed, "1.3-dhs-IR-vars-climate-zones.fst"), as.data.table = TRUE)
-colnames(df_IR_long_w_zones_dt)
+df_IR_long <- read_fst(here(path_processed, "1.1-dhs-IR-vars-created.fst"), as.data.table = TRUE)
+colnames(df_IR_long)
 ### Remove week_of_year as it was already created in 2.2
-df_IR_long_w_zones_dt$week_of_year <- NULL
+df_IR_long$week_of_year <- NULL
 
 ### Climate data ------
-df_climate_final <- read_fst(here(path_processed, "2.4-dhs-psu-paper.fst"), as.data.table = TRUE)
+df_climate_final <- read_fst(here(path_processed, "2.3-dhs-psu-paper.fst"), as.data.table = TRUE)
 colnames(df_climate_final)
 # Merge IR and Temperature data ---- 
-df_paper_final <- merge(df_IR_long_w_zones_dt, df_climate_final,
+df_paper_final <- merge(df_IR_long, df_climate_final,
                            by.x = c("psu", "dob"),
                            by.y = c("psu", "date"))
 

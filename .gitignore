@@ -5,4 +5,6 @@
 .lintr
 .conda
 .vscode
-
+.Rhistory
+*.Rproj
+dummy.R

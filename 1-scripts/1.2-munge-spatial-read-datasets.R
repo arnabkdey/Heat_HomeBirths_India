@@ -42,5 +42,5 @@ if (!dir.exists(path_processed_data)) {
   dir.create(path_processed_data, showWarnings = TRUE, recursive = TRUE)
 }
 ## Save the file
-saveRDS(df_dhs_psu_geo, file = here(path_processed_data, "2.1-a-df-dhs-psu-geo.rds"))
-saveRDS(india_boundary_buf, file = here(path_processed_data, "2.1-b-ind-boundary-0-buf.rds"))
+saveRDS(df_dhs_psu_geo, file = here(path_processed_data, "1.2-a-df-dhs-psu-geo.rds"))
+saveRDS(india_boundary_buf, file = here(path_processed_data, "1.2-b-ind-boundary-0-buf.rds"))
