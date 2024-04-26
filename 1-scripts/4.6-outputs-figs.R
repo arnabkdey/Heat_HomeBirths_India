@@ -25,7 +25,7 @@ read_excel_sheets_and_combine <- function(file_path, effect_modifier_name) {
 }
 
 # Run the function for all the effect modifiers ----
-here_output_files <- here("3-output", "models", "models-with-interaction")
+here_output_files <- here("3-outputs", "models", "models-with-interaction")
 caste <- read_excel_sheets_and_combine(here(here_output_files, "multcomp-cis-caste.xlsx"), "Caste")
 religion <- read_excel_sheets_and_combine(here(here_output_files, "multcomp-cis-religion.xlsx"), "Religion")
 residence <- read_excel_sheets_and_combine(here(here_output_files, "multcomp-cis-rural.xlsx"), "Residence")
@@ -106,13 +106,11 @@ data <- data %>% mutate(contrast = fct_reorder(contrast, desc(contrast)))
 df_plot_abs <- data %>%
   filter(grepl("°C", exposure)) |> 
   mutate(exposure = as.character(exposure)) %>% 
-  mutate(exposure = ifelse(!str_detect(exposure, "for"), "Daily temperature ≥ 30°C on the delivery date", exposure))
+  mutate(exposure = ifelse(!str_detect(exposure, "for"), paste0("Daily temperature", " \U2265 ", "30", "\U00B0", "C on the delivery date"), exposure))
 
 ### Order the levels of the exposure variables
-ord_exposure_abs <- c("Daily temperature ≥ 30°C on the delivery date", 
-                  "Daily temperature ≥ 30°C for 2+ days", 
-                  "Daily temperature ≥ 30°C for 3+ days", 
-                  "Daily temperature ≥ 30°C for 5+ days")
+levels_abs <- levels(factor(df_plot_abs$exposure))
+ord_exposure_abs <- c(levels_abs[4], levels_abs[1], levels_abs[2], levels_abs[3])
 
 df_plot_abs$exposure <- factor(df_plot_abs$exposure, levels=rev(ord_exposure_abs))
 df_plot_abs <- df_plot_abs %>% mutate(exposure = fct_reorder(exposure, desc(exposure)))
@@ -138,13 +136,13 @@ df_plot_rel$exposure <- factor(df_plot_rel$exposure, levels=rev(ord_exposure_rel
 df_plot_rel <- df_plot_rel %>% mutate(exposure = fct_reorder(exposure, desc(exposure)))                  
 
 ### Quick check
-# unique(data$exposure)
+# unique(df_plot_rel$exposure)
 # nrow(data)
 # nrow(df_plot_rel)
 
 # Create the plots ---- 
 ## Call function to plot with here
-source(here("src", "5.5-function-to-plot-effect-modifiers.R"))
+source(here("1-scripts", "5.3-function-to-plot-effect-modifiers.R"))
 
 ## Create the plots for the effect modifiers ----
 ### Plots with absolute temperature -----

@@ -49,3 +49,4 @@ write_fst(df_psu_temp_precip_vars_added, path = here(path_processed, "2.2-daily-
 
 print("Script 2.3 complete")
 print(Sys.time())
+

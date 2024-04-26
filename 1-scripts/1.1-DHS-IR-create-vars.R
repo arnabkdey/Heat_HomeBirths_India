@@ -31,7 +31,7 @@ df_dhs_IR_raw <- haven::read_dta(here("2-data", "2.1-raw-data", "dhs_india_IR", 
 ## Convert to factors
 df_dhs_IR_raw <- as_factor(df_dhs_IR_raw) 
 df_dhs_IR_raw_dt <- setDT(df_dhs_IR_raw)
-nrow(df_dhs_IR_raw_dt)
+nrow(df_dhs_IR_raw_dt) # 724,115
 
 # Step-3: Filter cases for analysis ---- 
 df_dhs_IR_valid <- df_dhs_IR_raw_dt |>
@@ -41,6 +41,8 @@ df_dhs_IR_valid <- df_dhs_IR_raw_dt |>
     dplyr::select(-v135)
 
 # nrow(df_dhs_IR_raw_dt)-nrow(df_dhs_IR_valid)-18312-537290
+nrow(df_dhs_IR_valid)  # 159,911
+# 724115-18312-537290-8602
 
 # Step-4: Convert from wide to long ----
 df_IR_long <- df_dhs_IR_valid |>
@@ -58,6 +60,8 @@ df_IR_long <- df_dhs_IR_valid |>
     dplyr::select(-Birth) |> 
     # retain only births that are valid
     dplyr::filter(!is.na(m15)) 
+
+nrow(df_IR_long)  # 211,406
 
 ## Quick check variables and denominators
 dput(colnames(df_IR_long))
@@ -79,7 +83,8 @@ df_IR_long <- df_IR_long |>
     dplyr::mutate(week_day = lubridate::wday(dob, label = TRUE)) |>
     dplyr::mutate(week_of_year = lubridate::week(dob)) |>
     dplyr::mutate(month_birth = lubridate::month(dob)) |>
-    dplyr::mutate(year_birth = lubridate::year(dob))
+    dplyr::mutate(year_birth = lubridate::year(dob)) 
+
 
 ## Institutional delivery
 df_IR_long <- df_IR_long |> 

@@ -1,5 +1,5 @@
 # Libraries ----
-pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, lme4, broom, broom.mixed, here)
+pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, here)
 library(survey)
 rm(list = ls())
 
@@ -8,7 +8,7 @@ path_processed <- here("2-data", "2.2-processed-data")
 df_paper_final <- readRDS(here(path_processed, "3.1-final-data-for-paper.rds"))
 
 # Load function for weighted tables ----
-function_path <- here("1-scripts", "5.3-function-wtd-comparegroups.R")
+function_path <- here("1-scripts", "5.2-function-wtd-comparegroups.R")
 source(function_path)
 ls()
 
@@ -21,7 +21,7 @@ if (!dir.exists(path_output)) {
 
 # Create list of variables
 varlist_ses <- c("mat_age", "mat_age_grp_at_birth", "mat_edu_level", "hh_caste_club", "hh_religion_bi", 
-                  "hh_wealth_quintile_ru_og", "rural", "clim_zone_short", "year_birth_fac")
+                  "hh_wealth_quintile_ru_og", "rural")
 
 varlist_exp_wb_ntile <- c("hotday_90_wb", "hw_90_wb_2d", "hw_90_wb_3d", "hw_90_wb_5d", 
                         "hotday_95_wb", "hw_95_wb_2d", "hw_95_wb_3d", "hw_95_wb_5d", 

@@ -7,4 +7,5 @@
 .vscode
 .Rhistory
 *.Rproj
+*.Rproj.user
 dummy.R

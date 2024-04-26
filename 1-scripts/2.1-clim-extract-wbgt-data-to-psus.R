@@ -18,7 +18,7 @@ india_boundary_buf <- readRDS(here(path_processed, "1.2-b-ind-boundary-0-buf.rds
 # head(df_dhs_psu_geo_sf)
 
 # Step-2: load-function to extract climate data to DHS PSUs ----
-source(here("1-scripts", "5.4-function-to-extract-climate-data-for-psus.R"))
+source(here("1-scripts", "5.1-function-to-extract-climate-data-for-psus.R"))
 
 # Step-3: Run the function to extract climate data for each PSU ----
 ## Tmax - WB

@@ -51,6 +51,9 @@ label(df_paper_final$hw_32_wb_5d) <- "HW(32C)-WB(5 days)"
 
 print("variable labels assigned")
 
+# Center the mean precipitation dataset ----
+df_paper_final$mean_precip_center <- scale(df_paper_final$mean_precip, center = TRUE, scale = FALSE)
+
 # Save file ---- 
 ## Saving in RDS because saving in fst looses some of the variable labels
 saveRDS(df_paper_final, here(path_processed, "3.1-final-data-for-paper.rds"))
