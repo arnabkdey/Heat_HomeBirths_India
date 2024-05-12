@@ -13,7 +13,7 @@ print("finished loading")
 print(Sys.time())
 
 # Specify varlist, formulas, and stratified datasets ----
-varlist_cov_base <- c("mat_age_grp_at_birth", "mat_edu_level", "month_birth_fac", "mean_precip_center")
+varlist_cov_base <- c("mat_age_grp_at_birth", "mat_edu_level", "month_birth_fac", "mean_precip_center", "access_issue_distance")
 
 varlist_interaction <- c("rural", "hh_caste_club", "hh_religion_bi", 
                             "hh_wealth_quintile_ru_og", "lt_tmax_cat_tert_wb")

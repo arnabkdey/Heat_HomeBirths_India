@@ -21,7 +21,7 @@ if (!dir.exists(path_output)) {
 
 # Create list of variables
 varlist_ses <- c("mat_age", "mat_age_grp_at_birth", "mat_edu_level", "hh_caste_club", "hh_religion_bi", 
-                  "hh_wealth_quintile_ru_og", "rural")
+                  "hh_wealth_quintile_ru_og", "rural", "access_issue_distance")
 
 varlist_exp_wb_ntile <- c("hotday_90_wb", "hw_90_wb_2d", "hw_90_wb_3d", "hw_90_wb_5d", 
                         "hotday_95_wb", "hw_95_wb_2d", "hw_95_wb_3d", "hw_95_wb_5d", 

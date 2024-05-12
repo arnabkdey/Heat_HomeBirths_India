@@ -20,8 +20,11 @@ varlist_mat_health_utiliz <- c("m15_1", "m15_2", "m15_3", "m15_4", "m15_5", "m15
 ## SES variables
 varlist_ses <- c("v012", "v201", "v106", "v130", "s116", "v190", "v190a", "v135")
 
+## Access related variables
+varlist_access <- c("v467d")
+
 ## Combine the individual varlists
-varlist_select <- c(varlist_meta, varlist_birth_history, varlist_mat_health_utiliz, varlist_ses)
+varlist_select <- c(varlist_meta, varlist_birth_history, varlist_mat_health_utiliz, varlist_ses, varlist_access)
 
 # Step-2: Read the data ----
 ## Load raw dataset
@@ -68,8 +71,8 @@ dput(colnames(df_IR_long))
 nrow(df_IR_long)
 sum(is.na(df_IR_long))
 
-# Step-5: Create variables ----
-## Birth related vars
+# Step-5: Create variables ----------------------
+## Birth related vars ---------------------------
 df_IR_long <- df_IR_long |>
     ### create UID
     dplyr::mutate(strata_id = as.numeric(factor(paste0(caseid, bidx)))) |>
@@ -86,7 +89,7 @@ df_IR_long <- df_IR_long |>
     dplyr::mutate(year_birth = lubridate::year(dob)) 
 
 
-## Institutional delivery
+## Institutional delivery -----------------------
 df_IR_long <- df_IR_long |> 
     ### Create variable for institutional delivery
     dplyr::mutate(dv_home_del =
@@ -97,7 +100,7 @@ df_IR_long <- df_IR_long |>
     dplyr::mutate(dv_home_del_fac = as.factor(dv_home_del)) |>
     dplyr::mutate(dv_inst_del = ifelse(dv_home_del == 1, 0, 1))
 
-## Religion and Caste
+## Religion and Caste ---------------------------
 df_IR_long <- df_IR_long |>
   # Religion classification
   mutate(
@@ -146,7 +149,7 @@ df_IR_long <- df_IR_long |>
     )
   )
                                                
-## Women's age
+## Women's age related variables ---------------------------
 ### Current age at interview
 df_IR_long <- df_IR_long |> 
                     mutate(mat_age_grp = case_when(
@@ -175,8 +178,12 @@ df_IR_long <- df_IR_long |>
 setDT(df_IR_long)
 df_IR_long <- df_IR_long[, wt_final := wt_raw / 1000000]
 
+## Access to healthcare ---------------------------
+df_IR_long <- df_IR_long |> 
+                dplyr::mutate(access_issue_distance = 
+                  ifelse(v467d == "big problem", "big-problem", "not-a-big-prob"))
 
-# Step-6: Convert variables to factor ----
+# Step-6: Convert variables to factor --------
 df_IR_long$psu_fac <- as.factor(df_IR_long$psu)
 df_IR_long$dist_name_fac <- as.factor(df_IR_long$dist_name)
 df_IR_long$state_name_fac <- as.factor(df_IR_long$state_name)

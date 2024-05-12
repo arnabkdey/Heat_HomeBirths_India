@@ -17,7 +17,8 @@ print(Sys.time())
 ## Combination of varlists -----
 ### For potential confounders -----
 varlist_cov_base_rc <- c("rural", "mat_age_grp_at_birth", "mat_edu_level", "month_birth_fac", 
-                        "hh_wealth_quintile_ru_og", "hh_caste_club", "hh_religion_bi", "mean_precip_center")
+                        "hh_wealth_quintile_ru_og", "hh_caste_club", "hh_religion_bi", 
+                        "mean_precip_center", "access_issue_distance")
 
 ### For exposure variables -----
 #### Varlist with wb -----
