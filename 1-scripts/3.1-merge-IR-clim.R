@@ -23,33 +23,50 @@ df_paper_final <- merge(df_IR_long, df_climate_final,
 
 # Assign Variable Labels ----
 library(Hmisc)
-label(df_paper_final$hotday_90_wb) <- "Hotday(90th percentile)-WB"
-label(df_paper_final$hw_90_wb_2d) <- "HW(90th percentile)-WB(2 days)"
-label(df_paper_final$hw_90_wb_3d) <- "HW(90th percentile)-WB(3 days)"
-label(df_paper_final$hw_90_wb_5d) <- "HW(90th percentile)-WB(5 days)"
-label(df_paper_final$hotday_95_wb) <- "Hotday(95th percentile)-WB"
-label(df_paper_final$hw_95_wb_2d) <- "HW(95th percentile)-WB(2 days)"
-label(df_paper_final$hw_95_wb_3d) <- "HW(95th percentile)-WB(3 days)"
-label(df_paper_final$hw_95_wb_5d) <- "HW(95th percentile)-WB(5 days)"
-label(df_paper_final$hotday_97_wb) <- "Hotday(97th percentile)-WB"
-label(df_paper_final$hw_97_wb_2d) <- "HW(97th percentile)-WB(2 days)"
-label(df_paper_final$hw_97_wb_3d) <- "HW(97th percentile)-WB(3 days)"
-label(df_paper_final$hw_97_wb_5d) <- "HW(97th percentile)-WB(5 days)"
+# Label variables
+## Absolute values
+label(df_paper_final$hotday_wb_30) <- "Hotday(30C)-WB"
+label(df_paper_final$hw_wb_30_2d) <- "HW(30C)-WB(2 days)"
+label(df_paper_final$hw_wb_30_3d) <- "HW(30C)-WB(3 days)"
+label(df_paper_final$hw_wb_30_5d) <- "HW(30C)-WB(5 days)"
+label(df_paper_final$hotday_wb_31) <- "Hotday(31C)-WB"
+label(df_paper_final$hw_wb_31_2d) <- "HW(31C)-WB(2 days)"
+label(df_paper_final$hw_wb_31_3d) <- "HW(31C)-WB(3 days)"
+label(df_paper_final$hw_wb_31_5d) <- "HW(31C)-WB(5 days)"
+label(df_paper_final$hotday_wb_32) <- "Hotday(32C)-WB"
+label(df_paper_final$hw_wb_32_2d) <- "HW(32C)-WB(2 days)"
+label(df_paper_final$hw_wb_32_3d) <- "HW(32C)-WB(3 days)"
+label(df_paper_final$hw_wb_32_5d) <- "HW(32C)-WB(5 days)"
 
-label(df_paper_final$hotday_30_wb) <- "Hotday(30C)-WB"
-label(df_paper_final$hw_30_wb_2d) <- "HW(30C)-WB(2 days)"
-label(df_paper_final$hw_30_wb_3d) <- "HW(30C)-WB(3 days)"
-label(df_paper_final$hw_30_wb_5d) <- "HW(30C)-WB(5 days)"
-label(df_paper_final$hotday_31_wb) <- "Hotday(31C)-WB"
-label(df_paper_final$hw_31_wb_2d) <- "HW(31C)-WB(2 days)"
-label(df_paper_final$hw_31_wb_3d) <- "HW(31C)-WB(3 days)"
-label(df_paper_final$hw_31_wb_5d) <- "HW(31C)-WB(5 days)"
-label(df_paper_final$hotday_32_wb) <- "Hotday(32C)-WB"
-label(df_paper_final$hw_32_wb_2d) <- "HW(32C)-WB(2 days)"
-label(df_paper_final$hw_32_wb_3d) <- "HW(32C)-WB(3 days)"
-label(df_paper_final$hw_32_wb_5d) <- "HW(32C)-WB(5 days)"
+## Ntile doy
+label(df_paper_final$hotday_wb_90_doy) <- "Hotday(90th percentile)-WB-doy"
+label(df_paper_final$hw_wb_90_doy_2d) <- "HW(90th percentile)-WB(2 days)-doy"
+label(df_paper_final$hw_wb_90_doy_3d) <- "HW(90th percentile)-WB(3 days)-doy"
+label(df_paper_final$hw_wb_90_doy_5d) <- "HW(90th percentile)-WB(5 days)-doy"
+label(df_paper_final$hotday_wb_95_doy) <- "Hotday(95th percentile)-WB-doy"
+label(df_paper_final$hw_wb_95_doy_2d) <- "HW(95th percentile)-WB(2 days)-doy"
+label(df_paper_final$hw_wb_95_doy_3d) <- "HW(95th percentile)-WB(3 days)-doy"
+label(df_paper_final$hw_wb_95_doy_5d) <- "HW(95th percentile)-WB(5 days)-doy"
+label(df_paper_final$hotday_wb_97_doy) <- "Hotday(97th percentile)-WB-doy"
+label(df_paper_final$hw_wb_97_doy_2d) <- "HW(97th percentile)-WB(2 days)-doy"
+label(df_paper_final$hw_wb_97_doy_3d) <- "HW(97th percentile)-WB(3 days)-doy"
+label(df_paper_final$hw_wb_97_doy_5d) <- "HW(97th percentile)-WB(5 days)-doy"
 
-print("variable labels assigned")
+## Ntile harmo
+label(df_paper_final$hotday_wb_90_harmo) <- "Hotday(90th percentile)-WB-harmo"
+label(df_paper_final$hw_wb_90_harmo_2d) <- "HW(90th percentile)-WB(2 days)-harmo"
+label(df_paper_final$hw_wb_90_harmo_3d) <- "HW(90th percentile)-WB(3 days)-harmo"
+label(df_paper_final$hw_wb_90_harmo_5d) <- "HW(90th percentile)-WB(5 days)-harmo"
+label(df_paper_final$hotday_wb_95_harmo) <- "Hotday(95th percentile)-WB-harmo"
+label(df_paper_final$hw_wb_95_harmo_2d) <- "HW(95th percentile)-WB(2 days)-harmo"
+label(df_paper_final$hw_wb_95_harmo_3d) <- "HW(95th percentile)-WB(3 days)-harmo"
+label(df_paper_final$hw_wb_95_harmo_5d) <- "HW(95th percentile)-WB(5 days)-harmo"
+label(df_paper_final$hotday_wb_97_harmo) <- "Hotday(97th percentile)-WB-harmo"
+label(df_paper_final$hw_wb_97_harmo_2d) <- "HW(97th percentile)-WB(2 days)-harmo"
+label(df_paper_final$hw_wb_97_harmo_3d) <- "HW(97th percentile)-WB(3 days)-harmo"
+label(df_paper_final$hw_wb_97_harmo_5d) <- "HW(97th percentile)-WB(5 days)-harmo"
+
+print("Variable labels assigned")
 
 # Center the mean precipitation dataset ----
 df_paper_final$mean_precip_center <- scale(df_paper_final$mean_precip, center = TRUE, scale = FALSE)
@@ -58,5 +75,3 @@ df_paper_final$mean_precip_center <- scale(df_paper_final$mean_precip, center = 
 ## Saving in RDS because saving in fst looses some of the variable labels
 saveRDS(df_paper_final, here(path_processed, "3.1-final-data-for-paper.rds"))
 print("finished processing 3.1")
-
-

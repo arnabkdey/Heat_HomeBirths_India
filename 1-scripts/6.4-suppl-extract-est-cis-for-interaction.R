@@ -5,6 +5,7 @@ rm(list = ls())
 
 # Create a folder for the outputs ----
 path_out <- here("3-outputs", "models", "models-with-interaction")
+path_out <- here("3-outputs", "supplements", "models-with-interaction")
 if (!dir.exists(path_out)) {
   # Create the directory if it does not exist
   dir.create(path_out, showWarnings = TRUE, recursive = TRUE)
@@ -12,7 +13,7 @@ if (!dir.exists(path_out)) {
 
 # Load models ----
 path_processed <- here("2-data", "2.2-processed-data")
-model_int_all <- readRDS(here(path_processed, "4.4-models-interactions-90-30.rds"))
+model_int_all <- readRDS(here(path_processed, "6.3-models-all-interactions-supplement.rds"))
 print("finished loading models")
 model_names <- names(model_int_all)
 

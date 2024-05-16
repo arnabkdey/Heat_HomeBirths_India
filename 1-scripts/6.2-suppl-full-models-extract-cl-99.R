@@ -4,7 +4,7 @@ library(performance)
 rm(list = ls())
 
 # Create a folder for the outputs ----
-path_out <- here("3-outputs", "models", "models-no-interaction")
+path_out <- here("3-outputs", "supplements", "full-models", "conf-level-99")
 if (!dir.exists(path_out)) {
   # Create the directory if it does not exist
   dir.create(path_out, showWarnings = TRUE, recursive = TRUE)
@@ -24,7 +24,7 @@ tidy_outputs <- list()
 # Iterate over model_outputs to generate tidy outputs using broom.mixed::tidy()
 for(exposure in names(model_outputs)) {
   model <- model_outputs[[exposure]]
-  tidy_outputs[[exposure]] <- broom.mixed::tidy(model, exponentiate = TRUE, conf.int = TRUE, conf.level = 0.95)
+  tidy_outputs[[exposure]] <- broom.mixed::tidy(model, exponentiate = TRUE, conf.int = TRUE, conf.level = 0.99)
   print(paste0("finished processing", exposure))
 }
 
@@ -52,7 +52,7 @@ for(exposure in names(tidy_outputs)) {
 }
 
 ## Write Step-1 output to a file
-saveWorkbook(wb, here(path_out, "models_full.xlsx"), overwrite = TRUE)
+saveWorkbook(wb, here(path_out, "models_full_99.xlsx"), overwrite = TRUE)
 
 
 # Step-2: Consolidate coefficients for the primary exposure  in a single CSV ----
@@ -77,7 +77,7 @@ for(model_name in names(tidy_outputs)) {
 }
 
 ## Save Step-2  output to a CSV ----
-write.csv(combined_exposures, here(path_out, "models_consolidated_coefficients.csv"), row.names = FALSE)
+write.csv(combined_exposures, here(path_out, "models_consolidated_coefficients_99.csv"), row.names = FALSE)
 
 # Step-3: Extract R2 and ICC for models ----
 ## Initialize empty lists ----- 
@@ -113,4 +113,4 @@ df_icc_r2 <- data.frame(
 )
 
 ## Save Step-3 output to a file
-write.csv(df_icc_r2, here(path_out, "model_metrics.csv"), row.names = FALSE)
+write.csv(df_icc_r2, here(path_out, "model_metrics_99.csv"), row.names = FALSE)

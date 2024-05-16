@@ -1,3 +1,4 @@
+# This code takes about 8 hours to run on a 32-core machine.
 # Load Libraries ---- 
 pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, lme4, broom, broom.mixed, here)
 library(parallel)
@@ -21,16 +22,25 @@ varlist_cov_base_rc <- c("rural", "mat_age_grp_at_birth", "mat_edu_level", "mont
                         "mean_precip_center", "access_issue_distance")
 
 ### For exposure variables -----
-#### Varlist with wb -----
-varlist_exp_wb_ntile <- c("hotday_90_wb", "hw_90_wb_2d", "hw_90_wb_3d", "hw_90_wb_5d", 
-                          "hotday_95_wb", "hw_95_wb_2d", "hw_95_wb_3d", "hw_95_wb_5d", 
-                          "hotday_97_wb", "hw_97_wb_2d", "hw_97_wb_3d", "hw_97_wb_5d")
+varlist_exp_wb_abs <- c(
+  "hotday_wb_30", "hw_wb_30_2d", "hw_wb_30_3d", "hw_wb_30_5d",
+  "hotday_wb_31", "hw_wb_31_2d", "hw_wb_31_3d", "hw_wb_31_5d",
+  "hotday_wb_32", "hw_wb_32_2d", "hw_wb_32_3d", "hw_wb_32_5d"
+)
 
-varlist_exp_wb_abs <- c("hotday_30_wb", "hw_30_wb_2d", "hw_30_wb_3d", "hw_30_wb_5d",
-                    "hotday_31_wb", "hw_31_wb_2d", "hw_31_wb_3d", "hw_31_wb_5d",
-                    "hotday_32_wb", "hw_32_wb_2d", "hw_32_wb_3d", "hw_32_wb_5d")
+varlist_exp_wb_ntile_doy <- c(
+  "hotday_wb_90_doy", "hw_wb_90_doy_2d", "hw_wb_90_doy_3d", "hw_wb_90_doy_5d",
+  "hotday_wb_95_doy", "hw_wb_95_doy_2d", "hw_wb_95_doy_3d", "hw_wb_95_doy_5d",
+  "hotday_wb_97_doy", "hw_wb_97_doy_2d", "hw_wb_97_doy_3d", "hw_wb_97_doy_5d"
+)
 
-varlist_exp_wb_all <- c(varlist_exp_wb_ntile, varlist_exp_wb_abs)
+varlist_exp_wb_ntile_harmo <- c(
+  "hotday_wb_90_harmo", "hw_wb_90_harmo_2d", "hw_wb_90_harmo_3d", "hw_wb_90_harmo_5d",
+  "hotday_wb_95_harmo", "hw_wb_95_harmo_2d", "hw_wb_95_harmo_3d", "hw_wb_95_harmo_5d",
+  "hotday_wb_97_harmo", "hw_wb_97_harmo_2d", "hw_wb_97_harmo_3d", "hw_wb_97_harmo_5d"
+)
+
+varlist_exp_wb_all <- c(varlist_exp_wb_ntile_doy, varlist_exp_wb_ntile_harmo, varlist_exp_wb_abs)
 
 # Run the models and save outputs ----
 
