@@ -8,4 +8,4 @@
 .Rhistory
 *.Rproj
 *.Rproj.user
-dummy.R
+dummy*.R

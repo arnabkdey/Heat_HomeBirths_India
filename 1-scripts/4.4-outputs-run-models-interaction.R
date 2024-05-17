@@ -1,3 +1,5 @@
+# This code takes about 18 hours to run on a 32 core machine
+
 # Load Libraries ---- 
 pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, lme4, broom, broom.mixed, here)
 library(parallel)

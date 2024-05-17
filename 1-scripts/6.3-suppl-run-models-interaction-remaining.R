@@ -63,7 +63,7 @@ print("finished generating formulas")
 # Run the models in parrallel ----
 
 # ## Register parallel backend
-no_cores <- detectCores() - 4
+no_cores <- detectCores() - 10
 registerDoParallel(cores = no_cores)
 
 # Use for_each to run the models in parallel
