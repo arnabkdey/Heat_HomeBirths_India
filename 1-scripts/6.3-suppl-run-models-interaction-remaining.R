@@ -1,3 +1,4 @@
+# This code takes about 40 hours to run on a 32 core PC
 # Load Libraries ---- 
 pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, lme4, broom, broom.mixed, here)
 library(parallel)
@@ -16,7 +17,8 @@ print(Sys.time())
 varlist_cov_base <- c("mat_age_grp_at_birth", "mat_edu_level", "month_birth_fac", "mean_precip_center", "access_issue_distance")
 
 varlist_interaction <- c("rural", "hh_caste_club", "hh_religion_bi", 
-                            "hh_wealth_quintile_ru_og", "lt_tmax_mean_cat_tert_wb", "lt_tmax_median_cat_tert_wb")
+                          "hh_wealth_quintile_ru_og", "lt_tmax_mean_cat_tert_wb", 
+                          "lt_tmax_median_cat_tert_wb")
 
 varlist_tot <- c(varlist_cov_base, varlist_interaction)
 

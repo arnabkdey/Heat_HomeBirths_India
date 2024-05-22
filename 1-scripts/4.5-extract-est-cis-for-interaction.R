@@ -54,7 +54,7 @@ for (i in index_rural) {
     # names(model_cur) <- names(model_int_all[[i]])
     # print(names(model_cur))
     glht_cur <- glht(model_cur, linfct = contrast_cur)
-    tab_cur <- tidy(glht_cur, conf.int = FALSE)
+    tab_cur <- tidy(glht_cur, conf.int = TRUE, exponentiate = FALSE)
     list_rural[[name_cur]] <- tab_cur
 }
 
@@ -89,7 +89,7 @@ for (i in index_caste) {
                     "Other vs ST" = c(0, 0, rep(0, 32), -1, 0, 1),
                     "SC vs ST" = c(0, 0, rep(0, 32), 0, -1, 1))
     glht_cur <- glht(model_cur, linfct = contrast_cur)
-    tab_cur <- tidy(glht_cur, conf.int = FALSE)
+    tab_cur <- tidy(glht_cur, conf.int = TRUE, exponentiate = FALSE)
     list_caste[[name_cur]] <- tab_cur
 }    
 
@@ -118,7 +118,7 @@ for (i in index_religion) {
                     "Not-Hindu" = c(0, 1, rep(0, 32), 1), 
                     "Hindu vs Not-Hindu" = c(0, 0, rep(0, 32), 1))
     glht_cur <- glht(model_cur, linfct = contrast_cur)
-    tab_cur <- tidy(glht_cur, conf.int = FALSE)
+    tab_cur <- tidy(glht_cur, conf.int = TRUE, exponentiate = FALSE)
     list_rel[[name_cur]] <- tab_cur
 }
 
@@ -159,7 +159,7 @@ for (i in index_wealth) {
                     "Middle vs Richest" = c(0, 0, rep(0, 32), 0, -1, 0, 1),
                     "Richer vs Richest" = c(0, 0, rep(0, 32), 0, 0, -1, 1))
     glht_cur <- glht(model_cur, linfct = contrast_cur)
-    tab_cur <- tidy(glht_cur, conf.int = FALSE)
+    tab_cur <- tidy(glht_cur, conf.int = TRUE, exponentiate = FALSE)
     list_wealth[[name_cur]] <- tab_cur
 }
 
@@ -191,7 +191,7 @@ for (i in index_lt_tmax_mean) {
                     "Lowest_Tertile vs High_Tertile" = c(0, 0, rep(0, 32), 0, 1),
                     "Medium_Tertile vs High_Tertile" = c(0, 0, rep(0, 32), -1, 1))
     glht_cur <- glht(model_cur, linfct = contrast_cur)
-    tab_cur <- tidy(glht_cur, conf.int = FALSE)
+    tab_cur <- tidy(glht_cur, conf.int = TRUE, exponentiate = FALSE)
     list_lt_tmax_mean[[name_cur]] <- tab_cur                    
 }    
 
@@ -223,7 +223,7 @@ for (i in index_lt_tmax_median) {
                     "Lowest_Tertile vs High_Tertile" = c(0, 0, rep(0, 32), 0, 1),
                     "Medium_Tertile vs High_Tertile" = c(0, 0, rep(0, 32), -1, 1))
     glht_cur <- glht(model_cur, linfct = contrast_cur)
-    tab_cur <- tidy(glht_cur, conf.int = FALSE)
+    tab_cur <- tidy(glht_cur, conf.int = TRUE, exponentiate = FALSE)
     list_lt_tmax_median[[name_cur]] <- tab_cur
 }    
 

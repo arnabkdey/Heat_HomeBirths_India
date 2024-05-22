@@ -4,7 +4,7 @@ library(performance)
 rm(list = ls())
 
 # Create a folder for the outputs ----
-path_out <- here("3-outputs", "supplements", "full-models", "conf-level-99")
+path_out <- here("3-outputs", "supplements", "models", "models-no-interaction")
 if (!dir.exists(path_out)) {
   # Create the directory if it does not exist
   dir.create(path_out, showWarnings = TRUE, recursive = TRUE)

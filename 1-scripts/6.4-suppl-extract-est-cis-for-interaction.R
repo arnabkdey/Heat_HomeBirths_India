@@ -4,7 +4,7 @@ library(multcomp)
 rm(list = ls())
 
 # Create a folder for the outputs ----
-path_out <- here("3-outputs", "models", "models-with-interaction")
+path_out <- here("3-outputs", "supplements", "models", "models-with-interaction")
 if (!dir.exists(path_out)) {
   # Create the directory if it does not exist
   dir.create(path_out, showWarnings = TRUE, recursive = TRUE)
@@ -12,7 +12,7 @@ if (!dir.exists(path_out)) {
 
 # Load models ----
 path_processed <- here("2-data", "2.2-processed-data")
-model_int_all <- readRDS(here(path_processed, "4.4-models-interactions-90-30.rds"))
+model_int_all <- readRDS(here(path_processed, "6.3-models-all-interactions-supplement.rds"))
 print("finished loading models")
 model_names <- names(model_int_all)
 
@@ -54,13 +54,13 @@ for (i in index_rural) {
     # names(model_cur) <- names(model_int_all[[i]])
     # print(names(model_cur))
     glht_cur <- glht(model_cur, linfct = contrast_cur)
-    tab_cur <- tidy(glht_cur, conf.int = FALSE)
+    tab_cur <- tidy(glht_cur, conf.int = TRUE, exponentiate = FALSE)
     list_rural[[name_cur]] <- tab_cur
 }
 
 ### Save to excel ----
 sheet_names_rural <- names(model_int_all[index_rural])
-write.xlsx(list_rural, here(path_out, "multcomp-cis-rural.xlsx"), sheetName = sheet_names_rural)
+write.xlsx(list_rural, here(path_out, "multcomp-cis-rural2.xlsx"), sheetName = sheet_names_rural)
 
 ## For Caste ----
 ### Run loop to extract multcomp objects ----
@@ -89,7 +89,7 @@ for (i in index_caste) {
                     "Other vs ST" = c(0, 0, rep(0, 32), -1, 0, 1),
                     "SC vs ST" = c(0, 0, rep(0, 32), 0, -1, 1))
     glht_cur <- glht(model_cur, linfct = contrast_cur)
-    tab_cur <- tidy(glht_cur, conf.int = FALSE)
+    tab_cur <- tidy(glht_cur, conf.int = TRUE, exponentiate = FALSE)
     list_caste[[name_cur]] <- tab_cur
 }    
 
@@ -118,7 +118,7 @@ for (i in index_religion) {
                     "Not-Hindu" = c(0, 1, rep(0, 32), 1), 
                     "Hindu vs Not-Hindu" = c(0, 0, rep(0, 32), 1))
     glht_cur <- glht(model_cur, linfct = contrast_cur)
-    tab_cur <- tidy(glht_cur, conf.int = FALSE)
+    tab_cur <- tidy(glht_cur, conf.int = TRUE, exponentiate = FALSE)
     list_rel[[name_cur]] <- tab_cur
 }
 
@@ -159,7 +159,7 @@ for (i in index_wealth) {
                     "Middle vs Richest" = c(0, 0, rep(0, 32), 0, -1, 0, 1),
                     "Richer vs Richest" = c(0, 0, rep(0, 32), 0, 0, -1, 1))
     glht_cur <- glht(model_cur, linfct = contrast_cur)
-    tab_cur <- tidy(glht_cur, conf.int = FALSE)
+    tab_cur <- tidy(glht_cur, conf.int = TRUE, exponentiate = FALSE)
     list_wealth[[name_cur]] <- tab_cur
 }
 
@@ -191,7 +191,7 @@ for (i in index_lt_tmax_mean) {
                     "Lowest_Tertile vs High_Tertile" = c(0, 0, rep(0, 32), 0, 1),
                     "Medium_Tertile vs High_Tertile" = c(0, 0, rep(0, 32), -1, 1))
     glht_cur <- glht(model_cur, linfct = contrast_cur)
-    tab_cur <- tidy(glht_cur, conf.int = FALSE)
+    tab_cur <- tidy(glht_cur, conf.int = TRUE, exponentiate = FALSE)
     list_lt_tmax_mean[[name_cur]] <- tab_cur                    
 }    
 
@@ -223,9 +223,9 @@ for (i in index_lt_tmax_median) {
                     "Lowest_Tertile vs High_Tertile" = c(0, 0, rep(0, 32), 0, 1),
                     "Medium_Tertile vs High_Tertile" = c(0, 0, rep(0, 32), -1, 1))
     glht_cur <- glht(model_cur, linfct = contrast_cur)
-    tab_cur <- tidy(glht_cur, conf.int = FALSE)
+    tab_cur <- tidy(glht_cur, conf.int = TRUE, exponentiate = FALSE)
     list_lt_tmax_median[[name_cur]] <- tab_cur
-}    
+}
 
 ### Save to excel ----
 sheet_names_lt_tmax_median <- names(model_int_all[index_lt_tmax_median])
