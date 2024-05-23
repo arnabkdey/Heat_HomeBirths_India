@@ -10,7 +10,7 @@ rm(list = ls())
 # Read datasets ----
 ## Final paper dataset
 path_processed <- here("2-data", "2.2-processed-data")
-df_paper_final <- readRDS(here(path_processed, "3.1-final-data-for-paper.rds"))
+df_paper_final <- readRDS(here(path_processed, "1.6-final-data-for-paper.rds"))
 print("finished loading")
 print(Sys.time())
 
@@ -19,24 +19,25 @@ varlist_cov_base <- c("mat_age_grp_at_birth", "mat_edu_level", "month_birth_fac"
 
 varlist_interaction <- c("rural", "hh_caste_club", "hh_religion_bi", 
                           "hh_wealth_quintile_ru_og", "lt_tmax_mean_cat_tert_wb", 
-                          "lt_tmax_median_cat_tert_wb")
+                          "access_issue_distance")
 
 varlist_tot <- c(varlist_cov_base, varlist_interaction)
 
 ### For exposure variables -----
 varlist_exp_wb_abs <- c(
-  "hotday_wb_30", "hw_wb_30_2d", "hw_wb_30_3d", "hw_wb_30_5d"
+  "hotday_wb_30", "hw_wb_30_2d", "hw_wb_30_3d", "hw_wb_30_5d",
+  "hotday_wb_31", "hw_wb_31_2d", "hw_wb_31_3d", "hw_wb_31_5d",
+  "hotday_wb_32", "hw_wb_32_2d", "hw_wb_32_3d", "hw_wb_32_5d"
 )
 
 varlist_exp_wb_ntile_doy <- c(
-  "hotday_wb_90_doy", "hw_wb_90_doy_2d", "hw_wb_90_doy_3d", "hw_wb_90_doy_5d"
+  "hotday_wb_90_doy", "hw_wb_90_doy_2d", "hw_wb_90_doy_3d", "hw_wb_90_doy_5d",
+  "hotday_wb_95_doy", "hw_wb_95_doy_2d", "hw_wb_95_doy_3d", "hw_wb_95_doy_5d",
+  "hotday_wb_97_doy", "hw_wb_97_doy_2d", "hw_wb_97_doy_3d", "hw_wb_97_doy_5d"
 )
 
-varlist_exp_wb_ntile_harmo <- c(
-  "hotday_wb_90_harmo", "hw_wb_90_harmo_2d", "hw_wb_90_harmo_3d", "hw_wb_90_harmo_5d"
-)
 
-varlist_exp_tot <- c(varlist_exp_wb_ntile_doy, varlist_exp_wb_ntile_harmo, varlist_exp_wb_abs)
+varlist_exp_tot <- c(varlist_exp_wb_ntile_doy, varlist_exp_wb_abs)
 
 # Define your outcome variable
 outcome_var <- "dv_home_del_fac"
@@ -79,6 +80,6 @@ model_outputs <- foreach(fmla = formulas_list, .combine = c) %dopar% {
 names(model_outputs) <- substr(names(formulas_list), 1, 30)
 
 # Save the list as an RDS object
-saveRDS(model_outputs, here(path_processed, "4.4-models-interactions-90-30.rds"))
+saveRDS(model_outputs, here(path_processed, "2.2-models-interactions-all-exp.rds"))
 print("finished saving all models")
 print(Sys.time())

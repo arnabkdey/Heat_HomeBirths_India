@@ -14,7 +14,7 @@ colnames(df_IR_long)
 df_IR_long$week_of_year <- NULL
 
 ### Climate data ------
-df_climate_final <- read_fst(here(path_processed, "2.3-dhs-psu-paper.fst"), as.data.table = TRUE)
+df_climate_final <- read_fst(here(path_processed, "1.5-dhs-psu-paper.fst"), as.data.table = TRUE)
 colnames(df_climate_final)
 # Merge IR and Temperature data ---- 
 df_paper_final <- merge(df_IR_long, df_climate_final,
@@ -73,5 +73,5 @@ df_paper_final$mean_precip_center <- scale(df_paper_final$mean_precip, center = 
 
 # Save file ---- 
 ## Saving in RDS because saving in fst looses some of the variable labels
-saveRDS(df_paper_final, here(path_processed, "3.1-final-data-for-paper.rds"))
-print("finished processing 3.1")
+saveRDS(df_paper_final, here(path_processed, "1.6-final-data-for-paper.rds"))
+print("finished processing 1.6")

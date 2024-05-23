@@ -4,7 +4,7 @@ library(multcomp)
 rm(list = ls())
 
 # Create a folder for the outputs ----
-path_out <- here("3-outputs", "supplements", "models", "models-with-interaction")
+path_out <- here("3-outputs", "models", "models-with-interaction")
 if (!dir.exists(path_out)) {
   # Create the directory if it does not exist
   dir.create(path_out, showWarnings = TRUE, recursive = TRUE)
@@ -12,22 +12,22 @@ if (!dir.exists(path_out)) {
 
 # Load models ----
 path_processed <- here("2-data", "2.2-processed-data")
-model_int_all <- readRDS(here(path_processed, "6.3-models-all-interactions-supplement.rds"))
+model_int_all <- readRDS(here(path_processed, "2.2-models-interactions-all-exp.rds"))
 print("finished loading models")
 model_names <- names(model_int_all)
 
 # Varlist of interaction terms -----
 varlist_interaction <- c("rural", "hh_caste_club", "hh_religion_bi", 
                           "hh_wealth_quintile_ru_og", "lt_tmax_mean_cat_tert_wb", 
-                          "lt_tmax_median_cat_tert_wb")
+                          "access_issue_distance")
 
 # Get the index of the models that contain the interaction tems ----
-index_rural <- model_names[1:24]
-index_caste <- model_names[25:48]
-index_religion <- model_names[49:72]
-index_wealth <- model_names[73:96]
-index_lt_tmax_mean <- model_names[97:120]
-index_lt_tmax_median <- model_names[121:144]
+index_rural <- model_names[1:12]
+index_caste <- model_names[13:24]
+index_religion <- model_names[25:36]
+index_wealth <- model_names[37:48]
+index_lt_tmax_mean <- model_names[49:60]
+index_lt_tmax_median <- model_names[61:72]
 
 # Extract multcomp objects for each Effect Modifier -----
 ## For Rural ----
@@ -60,7 +60,7 @@ for (i in index_rural) {
 
 ### Save to excel ----
 sheet_names_rural <- names(model_int_all[index_rural])
-write.xlsx(list_rural, here(path_out, "multcomp-cis-rural2.xlsx"), sheetName = sheet_names_rural)
+write.xlsx(list_rural, here(path_out, "multcomp-cis-rural.xlsx"), sheetName = sheet_names_rural)
 
 ## For Caste ----
 ### Run loop to extract multcomp objects ----
@@ -225,7 +225,7 @@ for (i in index_lt_tmax_median) {
     glht_cur <- glht(model_cur, linfct = contrast_cur)
     tab_cur <- tidy(glht_cur, conf.int = TRUE, exponentiate = FALSE)
     list_lt_tmax_median[[name_cur]] <- tab_cur
-}
+}    
 
 ### Save to excel ----
 sheet_names_lt_tmax_median <- names(model_int_all[index_lt_tmax_median])

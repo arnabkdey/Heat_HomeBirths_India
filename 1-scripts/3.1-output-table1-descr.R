@@ -5,10 +5,10 @@ rm(list = ls())
 
 # Load datasets ----
 path_processed <- here("2-data", "2.2-processed-data")
-df_paper_final <- readRDS(here(path_processed, "3.1-final-data-for-paper.rds"))
+df_paper_final <- readRDS(here(path_processed, "1.6-final-data-for-paper.rds"))
 
 # Load function for weighted tables ----
-function_path <- here("1-scripts", "5.2-function-wtd-comparegroups.R")
+function_path <- here("1-scripts", "6.2-function-wtd-comparegroups.R")
 source(function_path)
 ls()
 

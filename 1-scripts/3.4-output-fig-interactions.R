@@ -138,7 +138,7 @@ df_plot_rel_harmo_90 <- df_plot_rel_harmo_90 %>% mutate(exp_label = fct_reorder(
 
 # Create and save the plots ---- 
 ## Call function to plot with here
-source(here("1-scripts", "5.3-function-to-plot-effect-modifiers.R"))
+source(here("1-scripts", "6.3-function-to-plot-effect-modifiers.R"))
 
 ## Create directory -----
 path_fig_out <- here("3-outputs", "figures")

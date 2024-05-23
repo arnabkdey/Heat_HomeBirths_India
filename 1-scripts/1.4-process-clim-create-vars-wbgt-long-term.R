@@ -21,7 +21,7 @@ source(here("1-scripts", "5.5-function-for-parallel-proc-quantile-reg.R"))
 
 
 # load datasets needed for this script --------------------------------
-df_psu_temp_precip_vars_added <- read_fst(here(path_processed, "2.1-daily-temp-precip-1980-21-extracted-dhs-psu.fst"), as.data.table = T)
+df_psu_temp_precip_vars_added <- read_fst(here(path_processed, "1.3-daily-temp-precip-1980-21-extracted-dhs-psu.fst"), as.data.table = T)
 colnames(df_psu_temp_precip_vars_added)
 print("loading complete")
 print(Sys.time())
@@ -104,7 +104,7 @@ print("step-4-complete")
 print(Sys.time())
 
 # Save Work ---------------------------------------------------------
-write_fst(df_psu_temp_precip_vars_added, path = here(path_processed, "2.2-daily-clim-vars-long-term-by-day.fst"))
+write_fst(df_psu_temp_precip_vars_added, path = here(path_processed, "1.4-daily-clim-vars-long-term-by-day.fst"))
 
-print("Script 2.2 complete")
+print("Script 1.4 complete")
 print(Sys.time())

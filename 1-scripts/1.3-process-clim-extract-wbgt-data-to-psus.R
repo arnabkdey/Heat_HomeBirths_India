@@ -23,25 +23,25 @@ source(here("1-scripts", "5.1-function-to-extract-climate-data-for-psus.R"))
 # Step-3: Run the function to extract climate data for each PSU ----
 ## Tmax - WB
 df_psu_tmax_wb <- merge_dhs_climate(path = here_tmax_wb_raw, clim_var = "max_temp_wb")
-write_fst(df_psu_tmax_wb, path = here(path_processed, "2.1.1-df_psu_tmax_wb.fst"))
+write_fst(df_psu_tmax_wb, path = here(path_processed, "1.3.1-df_psu_tmax_wb.fst"))
 rm(df_psu_tmax_wb)
 
 print("finished Step-2: tmax-wb")
 
 ## Precipitation
 df_psu_precip <- merge_dhs_climate(path = here_precip, clim_var = "mean_precip")
-write_fst(df_psu_precip, path = here(path_processed, "2.1.2-df_psu_precip.fst"))
+write_fst(df_psu_precip, path = here(path_processed, "1.3.2-df_psu_precip.fst"))
 rm(df_psu_precip)
 print("finished Step-2: precip")
 
 # Step-4: Merge all the datasets ----
 rm(list = ls())
 ## Read Tmax - WB
-df_psu_tmax_wb <- read_fst(here(path_processed, "2.1.1-df_psu_tmax_wb.fst"), columns = c("psu", "date", "dist_name", "lat", "long", "max_temp_wb"))
+df_psu_tmax_wb <- read_fst(here(path_processed, "1.3.1-df_psu_tmax_wb.fst"), columns = c("psu", "date", "dist_name", "lat", "long", "max_temp_wb"))
 min(df_psu_tmax_wb$date)
 max(df_psu_tmax_wb$date)
 ## Read Precipitation
-df_psu_precip <- read_fst(here(path_processed, "2.1.2-df_psu_precip.fst"), columns = c("psu", "date", "mean_precip"))
+df_psu_precip <- read_fst(here(path_processed, "1.3.2-df_psu_precip.fst"), columns = c("psu", "date", "mean_precip"))
 min(df_psu_precip$date)
 max(df_psu_precip$date)
 
@@ -62,5 +62,5 @@ sum(is.na(df_psu_temp_precip$mean_precip))
 print("finished Step-3: merge")
 
 # Save your final work ---- 
-write_fst(df_psu_temp_precip, path = here(path_processed, "2.1-daily-temp-precip-1980-21-extracted-dhs-psu.fst"))
-print("finished Script 2.1")
+write_fst(df_psu_temp_precip, path = here(path_processed, "1.3-daily-temp-precip-1980-21-extracted-dhs-psu.fst"))
+print("finished Script 1.3")

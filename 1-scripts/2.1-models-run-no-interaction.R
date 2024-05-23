@@ -9,7 +9,7 @@ library(foreach)
 rm(list = ls())
 ## Final paper dataset
 path_processed <- here("2-data", "2.2-processed-data")
-df_paper_final <- readRDS(here(path_processed, "3.1-final-data-for-paper.rds"))
+df_paper_final <- readRDS(here(path_processed, "1.6-final-data-for-paper.rds"))
 print("finished loading")
 print(Sys.time())
 
@@ -45,7 +45,7 @@ varlist_exp_wb_all <- c(varlist_exp_wb_ntile_doy, varlist_exp_wb_ntile_harmo, va
 # Run the models and save outputs ----
 
 ## Register parallel backend
-no_cores <- detectCores() - 4
+no_cores <- detectCores() - 8
 registerDoParallel(cores = no_cores)
 ## Use foreach to iterate over exposures in parallel
 print(Sys.time())
@@ -71,6 +71,6 @@ names(models_first_set) <- varlist_exp_wb_all
 all_model_outputs <- models_first_set
 
 # Save the list as an RDS object
-saveRDS(all_model_outputs, here(path_processed, "4.2-models-no-interaction.rds"))
+saveRDS(all_model_outputs, here(path_processed, "2.1-models-no-interaction.rds"))
 print("Finished saving all models")
 print(Sys.time())
