@@ -1,4 +1,4 @@
-# This code takes about 11 hours to run on a 32-core machine.
+# This code takes about 7 hours to run on a 31-core machine with 128GB RAM
 # Load Libraries ---- 
 pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, lme4, broom, broom.mixed, here)
 library(parallel)
@@ -12,7 +12,6 @@ path_processed <- here("2-data", "2.2-processed-data")
 df_paper_final <- readRDS(here(path_processed, "1.6-final-data-for-paper.rds"))
 print("finished loading")
 print(Sys.time())
-
 
 # Specify varlist, formulas, and stratified datasets ----
 ## Combination of varlists -----
@@ -34,18 +33,12 @@ varlist_exp_wb_ntile_doy <- c(
   "hotday_wb_97_doy", "hw_wb_97_doy_2d", "hw_wb_97_doy_3d", "hw_wb_97_doy_5d"
 )
 
-varlist_exp_wb_ntile_harmo <- c(
-  "hotday_wb_90_harmo", "hw_wb_90_harmo_2d", "hw_wb_90_harmo_3d", "hw_wb_90_harmo_5d",
-  "hotday_wb_95_harmo", "hw_wb_95_harmo_2d", "hw_wb_95_harmo_3d", "hw_wb_95_harmo_5d",
-  "hotday_wb_97_harmo", "hw_wb_97_harmo_2d", "hw_wb_97_harmo_3d", "hw_wb_97_harmo_5d"
-)
-
-varlist_exp_wb_all <- c(varlist_exp_wb_ntile_doy, varlist_exp_wb_ntile_harmo, varlist_exp_wb_abs)
+varlist_exp_wb_all <- c(varlist_exp_wb_ntile_doy, varlist_exp_wb_abs)
 
 # Run the models and save outputs ----
 
 ## Register parallel backend
-no_cores <- detectCores() - 8
+no_cores <- detectCores() - 1
 registerDoParallel(cores = no_cores)
 ## Use foreach to iterate over exposures in parallel
 print(Sys.time())

@@ -16,7 +16,7 @@ plot_effect_modifier <- function(data, effect_modifier_col, effect_modifier_valu
 
   # Calculate the min and max for CILow and CIHigh
   # y_min <- min(filtered_data$CILow, na.rm = TRUE)
-  y_min <- 0
+  y_min <- min(filtered_data$CILow, na.rm = TRUE)
   y_max <- max(filtered_data$CIHigh, na.rm = TRUE)
 
   # Generate the plot with Segoe UI font
@@ -41,11 +41,17 @@ plot_effect_modifier <- function(data, effect_modifier_col, effect_modifier_valu
       legend.position="none",
       panel.spacing=unit(0, "cm"), 
       plot.title = element_text(size=13, family="Calibri"),
-    ) +
-    scale_x_continuous(limits = c(0.4, 1.6)) +
-    # scale_x_continuous(limits = c(y_min, y_max)) +
-    coord_flip()
-  
+    ) + 
+    coord_flip() 
+
+  if (y_max < 3) {
+    plot <- plot + scale_x_continuous(limits = c(0, 3), breaks = seq(0, 3, by = 0.5))
+  } else {
+    plot <- plot + scale_x_break(c(3, 6), scales = 0.2) + 
+                    scale_x_break(c(7, 18), scales = 0.1) + 
+                    scale_x_break(c(20, 26), scales = 0.1) + 
+                    scale_x_break(c(28, 74), scales = 0.1) 
+  } 
   return(plot)
 }
 
@@ -54,12 +60,22 @@ plot_wrapper <- function(df) {
   plot_religion <- plot_effect_modifier(df, "effect_modifier", "Religion")
   plot_residence <- plot_effect_modifier(df, "effect_modifier", "Residence")
   plot_wealth <- plot_effect_modifier(df, "effect_modifier", "Wealth")
+  plot_access <- plot_effect_modifier(df, "effect_modifier", "Distance is an issue to access health facility")
   plot_lt_temp_mean <- plot_effect_modifier(df, "effect_modifier", "Long-term mean temperature tertiles")
   
-  plot_out <- ggarrange(plot_caste, plot_religion, 
-                          plot_residence, plot_wealth, 
-                          plot_lt_temp_mean, 
-                        align = "h", ncol = 1, nrow=5, 
-                        labels = c("a", "b", "c", "d", "e")) 
-  return(plot_out)
+  # Plot using gg arrange
+  plot_out <- ggarrange(plot_caste, plot_religion,
+                          plot_residence, plot_wealth,
+                          plot_access, plot_lt_temp_mean,
+                        align = "none", ncol = 2, nrow=3,
+                        labels = c("a", "b", "c", "d", "e", "f")) 
+  # Combine the plots using patchwork
+  plot_out_patch <- (plot_caste + plot_religion + 
+                plot_residence + plot_wealth + 
+                plot_access + plot_lt_temp_mean) + 
+    plot_layout(ncol = 2, byrow = TRUE) +
+    plot_annotation(tag_levels = "a")
+
+  return(plot_out_patch)
 }
+

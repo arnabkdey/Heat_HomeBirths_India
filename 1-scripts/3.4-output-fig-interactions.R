@@ -8,6 +8,8 @@ library(sjPlot)
 library(readxl)
 library(here)
 library(extrafont)
+library(ggbreak)
+library(patchwork)
 # font_import() # run only once
 # loadfonts(device="win") # run only once
 
@@ -34,19 +36,19 @@ caste <- read_excel_sheets_and_combine(here(here_output_files, "multcomp-cis-cas
 religion <- read_excel_sheets_and_combine(here(here_output_files, "multcomp-cis-religion.xlsx"), "Religion")
 residence <- read_excel_sheets_and_combine(here(here_output_files, "multcomp-cis-rural.xlsx"), "Residence")
 wealth <- read_excel_sheets_and_combine(here(here_output_files, "multcomp-cis-wealth.xlsx"), "Wealth")
+access_issue_distance <- read_excel_sheets_and_combine(here(here_output_files, "multcomp-cis-access_issue_distance.xlsx"), "Distance is an issue to access health facility")
 lt_tmax_mean <- read_excel_sheets_and_combine(here(here_output_files, "multcomp-cis-lt_tmax_mean.xlsx"), "Long-term mean temperature tertiles")
-lt_tmax_median <- read_excel_sheets_and_combine(here(here_output_files, "multcomp-cis-lt_tmax_median.xlsx"), "Long-term median temperature tertiles")
 
 # Process data for plots ----
 ## Combine all the data ----
-data <- rbind(caste, religion, residence, wealth, lt_tmax_mean, lt_tmax_median)
+data <- rbind(caste, religion, residence, wealth, access_issue_distance, lt_tmax_mean)
 ## Filter and transform data for specified contrasts, calculate OR and CI, and retain relevant columns.
 data <- data %>% 
   filter(contrast %in% c("OBC", "SC", "ST", "Other", 
                          "Hindu", "Not-Hindu",
                          "Rural", "Urban",
                          "Poorest", "Poorer", "Middle", "Richer", "Richest",
-                         "Lowest_Tertile", "Medium_Tertile", "High_Tertile",
+                         "big-problem", "not-a-big-problem",
                          "Lowest_Tertile", "Medium_Tertile", "High_Tertile")) %>% 
   rename(exposure = tabname)  
 
@@ -80,6 +82,12 @@ unique(data$exp_label)
 data$contrast[data$contrast == "Lowest_Tertile"] <- "Cooler"
 data$contrast[data$contrast == "Medium_Tertile"] <- "Medium"
 data$contrast[data$contrast == "High_Tertile"] <- "Warmer"
+
+## Change contrast for access issue
+data$contrast[data$contrast == "big-problem"] <- "Big Problem"
+data$contrast[data$contrast == "not-a-big-problem"] <- "Not a big Problem"
+
+## Check values
 unique(data$contrast)
 head(data$exp_label)
 
@@ -88,53 +96,36 @@ ord_contrast <- c("ST", "SC", "OBC", "Other",
           "Hindu", "Not-Hindu",
           "Rural", "Urban",
           "Poorest", "Poorer", "Middle", "Richer", "Richest", 
+          "Big Problem", "Not a big Problem",
           "Cooler", "Medium", "Warmer")
-
 
 data$contrast <- factor(data$contrast, levels=rev(ord_contrast))
 data <- data %>% mutate(contrast = fct_reorder(contrast, desc(contrast))) 
 # unique(data$contrast)
 
 # Create datasets for plots ----
+## Function to create datasets for plots ----
+func_subset_data <- function(data, threshold_type, threshold) {
+    ## Subset data based on threshold and threshold type
+    df_plot <- data |> filter(tmp_threshold_type == threshold_type & tmp_threshold == threshold)
+    
+    ### Order the levels of the exposure variables
+    levels_exp <- levels(factor(df_plot$exp_label))
+    ord_exposure <- c(levels_exp[4], levels_exp[1], levels_exp[2], levels_exp[3])
+
+    df_plot$exp_label <- factor(df_plot$exp_label, levels=rev(ord_exposure))
+    df_plot <- df_plot %>% mutate(exp_label = fct_reorder(exp_label, desc(exp_label)))
+}
+
 ## Absolute -----
-df_plot_abs_30 <- data |> filter(tmp_threshold_type == "absolute") 
+df_plot_abs_30 <- func_subset_data(data, "absolute", "30")
+df_plot_abs_31 <- func_subset_data(data, "absolute", "31")
+df_plot_abs_32 <- func_subset_data(data, "absolute", "32")
 
-### Order the levels of the exposure variables
-levels_abs <- levels(factor(df_plot_abs_30$exp_label))
-ord_exposure_abs <- c(levels_abs[4], levels_abs[1], levels_abs[2], levels_abs[3])
-
-df_plot_abs_30$exp_label <- factor(df_plot_abs_30$exp_label, levels=rev(ord_exposure_abs))
-df_plot_abs_30 <- df_plot_abs_30 %>% mutate(exp_label = fct_reorder(exp_label, desc(exp_label)))
-
-### Quick check
-# unique(df_plot_abs_30$exposure)
-# nrow(data)
-# nrow(df_plot_abs_30)
-
-## Relative - based on DOY ----- 
-df_plot_rel_doy_90 <- data %>% filter(tmp_threshold_type == "doy")
-nrow(df_plot_rel_doy_90)
-
-### Order the levels of the exposure variables
-levels_rel_doy <- levels(factor(df_plot_rel_doy_90$exp_label))
-ord_exposure_rel_doy <- c(levels_rel_doy[4], levels_rel_doy[1], levels_rel_doy[2], levels_rel_doy[3])
-df_plot_rel_doy_90$exp_label <- factor(df_plot_rel_doy_90$exp_label, levels=rev(ord_exposure_rel_doy))
-df_plot_rel_doy_90 <- df_plot_rel_doy_90 %>% mutate(exp_label = fct_reorder(exp_label, desc(exp_label)))
-
-## Relative - based on Harmonic -----
-df_plot_rel_harmo_90 <- data %>% filter(tmp_threshold_type == "harmo")
-nrow(df_plot_rel_harmo_90)
-
-### Order the levels of the exposure variables
-levels_rel_harmo <- levels(factor(df_plot_rel_harmo_90$exp_label))
-ord_exposure_rel_harmo <- c(levels_rel_harmo[4], levels_rel_harmo[1], levels_rel_harmo[2], levels_rel_harmo[3])
-df_plot_rel_harmo_90$exp_label <- factor(df_plot_rel_harmo_90$exp_label, levels=rev(ord_exposure_rel_harmo))
-df_plot_rel_harmo_90 <- df_plot_rel_harmo_90 %>% mutate(exp_label = fct_reorder(exp_label, desc(exp_label)))
-
-### Quick check
-# unique(df_plot_rel$exposure)
-# nrow(data)
-# nrow(df_plot_rel)
+## Relative - based on DOY -----
+df_plot_rel_doy_90 <- func_subset_data(data, "doy", "90")
+df_plot_rel_doy_95 <- func_subset_data(data, "doy", "95")
+df_plot_rel_doy_97 <- func_subset_data(data, "doy", "97")
 
 # Create and save the plots ---- 
 ## Call function to plot with here
@@ -147,13 +138,35 @@ if (!dir.exists(path_fig_out)) {
   dir.create(path_fig_out, showWarnings = TRUE, recursive = TRUE)
 }
 
-## Write a loop to create and save plots
-list_dfs <- c("df_plot_abs_30", "df_plot_rel_doy_90", "df_plot_rel_harmo_90")
-for (df in list_dfs) {  
+## List all objects in the enviroment that start with "df_plot"
+list_df_plots <- ls(pattern = "df_plot")
+list_df_plots <-  list_df_plots[!list_df_plots %in% "df_plot_abs_32"]
+
+
+## Loop to create and save plots
+for (df in list_df_plots) {
   plot_comb <- plot_wrapper(eval(parse(text = df)))
   ggsave(here(path_fig_out, paste0("plot_", df, ".svg")), 
-         plot_comb, width = 35, height = 40, units = "cm", 
+         plot_comb, width = 70, height = 70, units = "cm", 
          dpi = 1000)
 }
+## Save plot for df_plot_abs_32 separately
+df <- df_plot_abs_32
+plot_caste <- plot_effect_modifier(df, "effect_modifier", "Caste")
+plot_religion <- plot_effect_modifier(df, "effect_modifier", "Religion")
+plot_residence <- plot_effect_modifier(df, "effect_modifier", "Residence")
+plot_wealth <- plot_effect_modifier(df, "effect_modifier", "Wealth")
+plot_access <- plot_effect_modifier(df, "effect_modifier", "Distance is an issue to access health facility")
+plot_lt_temp_mean <- plot_effect_modifier(df, "effect_modifier", "Long-term mean temperature tertiles")
+
+## Combine the plots using patchwork
+plot_out <- ((plot_caste | plot_religion) / 
+              (plot_residence | plot_access) / plot_wealth / plot_lt_temp_mean) +
+              plot_annotation(tag_levels = c('a'))
+
+## Save the plot
+ggsave(here(path_fig_out, "plot_df_plot_abs_32.svg"), 
+       plot_out, width = 120, height = 90, units = "cm", 
+       dpi = 1000) 
 
 

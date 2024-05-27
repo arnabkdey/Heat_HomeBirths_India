@@ -1,4 +1,4 @@
-# This code takes about 18 hours to run on a 32 core machine
+# This code takes about 20 hours to run on a 32 core machine with 192 GB of RAM
 
 # Load Libraries ---- 
 pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, lme4, broom, broom.mixed, here)
@@ -18,7 +18,8 @@ print(Sys.time())
 varlist_cov_base <- c("mat_age_grp_at_birth", "mat_edu_level", "month_birth_fac", "mean_precip_center", "access_issue_distance")
 
 varlist_interaction <- c("rural", "hh_caste_club", "hh_religion_bi", 
-                          "hh_wealth_quintile_ru_og", "lt_tmax_mean_cat_tert_wb", 
+                          "hh_wealth_quintile_ru_og", 
+                          "lt_tmax_mean_cat_tert_wb", 
                           "access_issue_distance")
 
 varlist_tot <- c(varlist_cov_base, varlist_interaction)
@@ -64,7 +65,7 @@ print("finished generating formulas")
 # Run the models in parrallel ----
 
 # ## Register parallel backend
-no_cores <- detectCores() - 4
+no_cores <- detectCores() - 6
 registerDoParallel(cores = no_cores)
 
 # Use for_each to run the models in parallel

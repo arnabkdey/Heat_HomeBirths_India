@@ -62,7 +62,9 @@ df_IR_long <- df_dhs_IR_valid |>
                     names_pattern = '(.*)(\\_+)') |>
     dplyr::select(-Birth) |> 
     # retain only births that are valid
-    dplyr::filter(!is.na(m15)) 
+    dplyr::filter(!is.na(m15)) |> 
+    # drop births that happened neither at home or at a facility
+    dplyr::filter(m15 != "other") # 476 cases
 
 nrow(df_IR_long)  # 211,406
 

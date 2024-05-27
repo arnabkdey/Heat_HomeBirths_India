@@ -76,6 +76,7 @@ for(model_name in names(tidy_outputs)) {
   combined_exposures <- rbind(combined_exposures, second_row)
 }
 
+head(combined_exposures)
 ## Save Step-2  output to a CSV ----
 write.csv(combined_exposures, here(path_out, "models_consolidated_coefficients_95.csv"), row.names = FALSE)
 

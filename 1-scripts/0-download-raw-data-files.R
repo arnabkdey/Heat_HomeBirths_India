@@ -35,7 +35,7 @@ for (i in seq_len(nrow(files_shp_india))) {
 }
 
 # Raw data for script-2.2: Download raw climate datasets ----
-## WBGT-max 
+## WBGT-max ----
 ### List all files in the Google drive folder
 folder_id_wbgt_max <- "1K0MrLG5RhFVnoDOE3F0amlz5CiyTuqQ_"
 files_wbgt_max <- googledrive::drive_ls(as_id(folder_id_wbgt_max))
@@ -50,7 +50,7 @@ for (i in seq_len(nrow(files_wbgt_max))) {
     googledrive::drive_download(as_id(cur_file$id), path = here(here_wbgt_max_raw, cur_file$name))
 }
 
-## Precipitation - CHIRPS
+## Precipitation - CHIRPS ----
 ### Create a local folder to download files
 here_precip_raw <- here("2-data", "2.1-raw-data", "precip_raw")
 dir.create(here_precip_raw, showWarnings = TRUE, recursive = TRUE)
