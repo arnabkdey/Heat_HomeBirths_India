@@ -41,11 +41,18 @@ df_dhs_IR_valid <- df_dhs_IR_raw_dt |>
     dplyr::filter(v135 == "usual resident") |> # dropped 18312 women who were not usual residents
     dplyr::filter(!is.na(m15_1)) |>  # dropped 537290 women who did not have a birth in the last 5 years or did not have info on place of delivery 
     dplyr::filter(!is.na(s116)) |> # dropped 8602 women whose caste was missing
+    # drop cases if any of m15_1 to m15_6 is "other"
+    dplyr::filter(!m15_1 %in% c("other")) |>
+    dplyr::filter(!m15_2 %in% c("other")) |>
+    dplyr::filter(!m15_3 %in% c("other")) |>
+    dplyr::filter(!m15_4 %in% c("other")) |>
+    dplyr::filter(!m15_5 %in% c("other")) |>
+    dplyr::filter(!m15_6 %in% c("other")) |>
     dplyr::select(-v135)
 
 # nrow(df_dhs_IR_raw_dt)-nrow(df_dhs_IR_valid)-18312-537290
-nrow(df_dhs_IR_valid)  # 159,911
-# 724115-18312-537290-8602
+nrow(df_dhs_IR_valid)  # 159,479
+# 724115-18312-537290-8602-432
 
 # Step-4: Convert from wide to long ----
 df_IR_long <- df_dhs_IR_valid |>
@@ -62,11 +69,9 @@ df_IR_long <- df_dhs_IR_valid |>
                     names_pattern = '(.*)(\\_+)') |>
     dplyr::select(-Birth) |> 
     # retain only births that are valid
-    dplyr::filter(!is.na(m15)) |> 
-    # drop births that happened neither at home or at a facility
-    dplyr::filter(m15 != "other") # 476 cases
+    dplyr::filter(!is.na(m15)) 
 
-nrow(df_IR_long)  # 211,406
+nrow(df_IR_long)  # 210,735
 
 ## Quick check variables and denominators
 dput(colnames(df_IR_long))
@@ -79,7 +84,7 @@ df_IR_long <- df_IR_long |>
     ### create UID
     dplyr::mutate(strata_id = as.numeric(factor(paste0(caseid, bidx)))) |>
     ### Filter missing births
-    dplyr::filter(!is.na(m15)) |>
+    # dplyr::filter(!is.na(m15)) |>
     ### Calculate DOB
     dplyr::mutate(dob = as.Date(b18, origin = "1900-01-01")) |>
     ### Calculate Date of Interview

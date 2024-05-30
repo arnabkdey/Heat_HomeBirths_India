@@ -35,17 +35,10 @@ varlist_exp_wb_ntile_doy <- c(
   "hotday_wb_97_doy", "hw_wb_97_doy_2d", "hw_wb_97_doy_3d", "hw_wb_97_doy_5d"
 )
 
-varlist_exp_wb_ntile_harmo <- c(
-  "hotday_wb_90_harmo", "hw_wb_90_harmo_2d", "hw_wb_90_harmo_3d", "hw_wb_90_harmo_5d",
-  "hotday_wb_95_harmo", "hw_wb_95_harmo_2d", "hw_wb_95_harmo_3d", "hw_wb_95_harmo_5d",
-  "hotday_wb_97_harmo", "hw_wb_97_harmo_2d", "hw_wb_97_harmo_3d", "hw_wb_97_harmo_5d"
-)
-
 # Convert list of variables to factor -----
 df_paper_final <- df_paper_final |> 
   mutate(across(all_of(varlist_exp_wb_abs), as.factor)) |> 
-  mutate(across(all_of(varlist_exp_wb_ntile_doy), as.factor)) |> 
-  mutate(across(all_of(varlist_exp_wb_ntile_harmo), as.factor))
+  mutate(across(all_of(varlist_exp_wb_ntile_doy), as.factor)) 
 
 # Create survey object
 svy_object <- svydesign(ids = ~1,
@@ -57,7 +50,8 @@ table1 <- compareGroups_wtd(data = df_paper_final,
                             dep_var = "dv_home_del_fac",
                             varlist = c(varlist_ses),
                             survey_object = svy_object,
-                            output_type = "full")
+                            output_type = "full", 
+                            n_digits = 1)
 
 tabyl(df_paper_final, year_birth_fac)
 ### View(table1)
@@ -70,7 +64,8 @@ table2a <- compareGroups_wtd(data = df_paper_final,
                             dep_var = "dv_home_del_fac",
                             varlist = c(varlist_exp_wb_abs),
                             survey_object = svy_object,
-                            output_type = "full")
+                            output_type = "full",
+                            n_digits = 1)
 
 ### Write a function to apply variable names
 interleave_blanks <- function(varlist) {
@@ -94,22 +89,14 @@ table2b <- compareGroups_wtd(data = df_paper_final,
                             dep_var = "dv_home_del_fac",
                             varlist = c(varlist_exp_wb_ntile_doy),
                             survey_object = svy_object,
-                            output_type = "full")
+                            output_type = "full",
+                            n_digits = 1)
 ### Apply the interleave_blanks function to create variable names
 table2b$Variable <- interleave_blanks(varlist_exp_wb_ntile_doy)
 
-## Table 2c: based on ntiles - Harmonic
-table2c <- compareGroups_wtd(data = df_paper_final,
-                            dep_var = "dv_home_del_fac",
-                            varlist = c(varlist_exp_wb_ntile_harmo),
-                            survey_object = svy_object,
-                            output_type = "full")
-### Apply the interleave_blanks function to create variable names
-table2c$Variable <- interleave_blanks(varlist_exp_wb_ntile_harmo)
-
 ## Save output
-list_tables <- list(table2a, table2b, table2c)
-list_sheets <- c("table2a", "table2b", "table2c")
+list_tables <- list(table2a, table2b)
+list_sheets <- c("table2a", "table2b")
 
 openxlsx::write.xlsx(list_tables, file = here(path_output, "table2.xlsx"), 
                       sheetNames = list_sheets)

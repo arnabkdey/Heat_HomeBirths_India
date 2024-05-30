@@ -1,5 +1,7 @@
     compareGroups_wtd <- function(data, dep_var,
-		     varlist, survey_object, output_type = "full") {
+		     varlist, survey_object, 
+			 output_type = "full",
+			 n_digits = 2) {
 	    # check if depvar is not numeric
 		    if (is.numeric(data[[dep_var]])) {
 			    stop("Dependent variable is numeric")
@@ -38,7 +40,7 @@
 			    df_wtd_prop_uni <- df_wtd_N_uni |>
 				    prop.table() |>
 				    magrittr::multiply_by(100) |>
-				    round(digits = 2) |>
+				    round(digits = n_digits) |>
 				    as.data.frame.array() |>
 				    tibble::rownames_to_column(var = "levels") |>
 				    dplyr::mutate(N = df_unwtd_N_uni)
@@ -52,7 +54,7 @@
 				    df_wtd_N_cat |>
 				    prop.table(2) |>
 				    magrittr::multiply_by(100) |>
-				    round(digits = 2) |>
+				    round(digits = n_digits) |>
 				    as.data.frame.array() |>
 				    tibble::rownames_to_column(var = "levels") 
 

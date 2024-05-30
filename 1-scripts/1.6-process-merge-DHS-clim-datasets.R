@@ -15,11 +15,16 @@ df_IR_long$week_of_year <- NULL
 
 ### Climate data ------
 df_climate_final <- read_fst(here(path_processed, "1.5-dhs-psu-paper.fst"), as.data.table = TRUE)
-colnames(df_climate_final)
+
 # Merge IR and Temperature data ---- 
+
 df_paper_final <- merge(df_IR_long, df_climate_final,
                            by.x = c("psu", "dob"),
                            by.y = c("psu", "date"))
+
+## Check for missing values
+nrow(df_IR_long) # 210,735
+nrow(df_paper_final) # 209,924 - 811 missing values dropped due to missing values in climate data
 
 # Assign Variable Labels ----
 library(Hmisc)
@@ -67,7 +72,7 @@ label(df_paper_final$hw_wb_97_harmo_3d) <- "HW(97th percentile)-WB(3 days)-harmo
 label(df_paper_final$hw_wb_97_harmo_5d) <- "HW(97th percentile)-WB(5 days)-harmo"
 
 print("Variable labels assigned")
-
+nrow(df_paper_final)
 # Center the mean precipitation dataset ----
 df_paper_final$mean_precip_center <- scale(df_paper_final$mean_precip, center = TRUE, scale = FALSE)
 

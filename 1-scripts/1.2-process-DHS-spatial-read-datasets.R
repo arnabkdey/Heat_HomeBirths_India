@@ -9,15 +9,20 @@ pacman::p_load(sf, sp, raster, terra, tidyterra, ncdf4, rnaturalearth)
 ### Load India shape file
 df_dhs_geo_raw <- read_sf(here("2-data", "2.1-raw-data", "dhs_shp_files_india", "IAGE7AFL.shp"))
 
-### Select relevant variables and filter out absurd geocodes
-df_dhs_psu_geo <- df_dhs_geo_raw %>% 
+### Rename variables 
+df_dhs_geo_raw <- df_dhs_geo_raw %>% 
   dplyr::select(psu = DHSCLUST, dist_name = DHSREGNA,
-                lat = LATNUM, long = LONGNUM) %>% 
+                lat = LATNUM, long = LONGNUM)
+nrow(df_dhs_geo_raw)
+
+### Filter missing values
+df_dhs_psu_geo <- df_dhs_geo_raw %>%
   dplyr::filter(!is.na(lat)) %>% 
   dplyr::filter(!is.na(long)) %>% 
   dplyr::filter(lat!=0 | long!=0) %>%                  #LAT=0 and LONG=0 are missing coordinates  
   dplyr::filter(lat <= -0.00005 | long >= 0.00005)      #missing obs. - remove
 
+nrow(df_dhs_psu_geo) #118 psus dropped
 
 ## Step-2: Get India Administrative Boundaries
 ### Load adm-1 for India

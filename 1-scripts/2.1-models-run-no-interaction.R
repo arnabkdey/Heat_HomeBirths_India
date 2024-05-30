@@ -1,4 +1,5 @@
-# This code takes about 7 hours to run on a 31-core machine with 128GB RAM
+# This code takes about 5 hours to run on a 28-core machine with 128GB RAM
+
 # Load Libraries ---- 
 pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, lme4, broom, broom.mixed, here)
 library(parallel)
@@ -38,7 +39,7 @@ varlist_exp_wb_all <- c(varlist_exp_wb_ntile_doy, varlist_exp_wb_abs)
 # Run the models and save outputs ----
 
 ## Register parallel backend
-no_cores <- detectCores() - 1
+no_cores <- detectCores() - 4
 registerDoParallel(cores = no_cores)
 ## Use foreach to iterate over exposures in parallel
 print(Sys.time())
