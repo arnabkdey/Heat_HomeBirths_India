@@ -189,3 +189,34 @@ for (i in index_access_issue_distance) {
 ### Save to excel ----
 sheet_names_access_issue_distance <- names(model_int_all[index_access_issue_distance])
 write.xlsx(list_access_issue_distance, here(path_out, "multcomp-cis-access_issue_distance.xlsx"), sheetName = sheet_names_access_issue_distance)
+
+# Save models arranged by exposure definition ----
+## For DOY - 90 ----
+list_doy_90 <- c(list_caste[1:4], list_rel[1:4], list_rural[1:4], list_wealth[1:4], list_access_issue_distance[1:4], list_lt_tmax_mean[1:4])
+sheet_names_doy_90 <- c(names(list_caste[1:4]), names(list_rel[1:4]), names(list_rural[1:4]), names(list_wealth[1:4]), names(list_access_issue_distance[1:4]), names(list_lt_tmax_mean[1:4]))
+write.xlsx(list_doy_90, here(path_out, "multcomp-doy-90.xlsx"), sheetName = sheet_names_doy_90)
+
+## For DOY - 95 ----
+list_doy_95 <- c(list_caste[5:8], list_rel[5:8], list_rural[5:8], list_wealth[5:8], list_access_issue_distance[5:8], list_lt_tmax_mean[5:8])
+sheet_names_doy_95 <- c(names(list_caste[5:8]), names(list_rel[5:8]), names(list_rural[5:8]), names(list_wealth[5:8]), names(list_access_issue_distance[5:8]), names(list_lt_tmax_mean[5:8]))
+write.xlsx(list_doy_95, here(path_out, "multcomp-doy-95.xlsx"), sheetName = sheet_names_doy_95)
+
+## For DOY - 97 ----
+list_doy_97 <- c(list_caste[9:12], list_rel[9:12], list_rural[9:12], list_wealth[9:12], list_access_issue_distance[9:12], list_lt_tmax_mean[9:12])
+sheet_names_doy_97 <- c(names(list_caste[9:12]), names(list_rel[9:12]), names(list_rural[9:12]), names(list_wealth[9:12]), names(list_access_issue_distance[9:12]), names(list_lt_tmax_mean[9:12]))
+write.xlsx(list_doy_97, here(path_out, "multcomp-doy-97.xlsx"), sheetName = sheet_names_doy_97)
+
+## For absolute value - 30 ----
+list_abs_30 <- c(list_caste[13:16], list_rel[13:16], list_rural[13:16], list_wealth[13:16], list_access_issue_distance[13:16], list_lt_tmax_mean[13:16])
+sheet_names_abs_30 <- c(names(list_caste[13:16]), names(list_rel[13:16]), names(list_rural[13:16]), names(list_wealth[13:16]), names(list_access_issue_distance[13:16]), names(list_lt_tmax_mean[13:16]))
+write.xlsx(list_abs_30, here(path_out, "multcomp-abs-30.xlsx"), sheetName = sheet_names_abs_30)
+
+## For absolute value - 31 ----
+list_abs_31 <- c(list_caste[17:20], list_rel[17:20], list_rural[17:20], list_wealth[17:20], list_access_issue_distance[17:20], list_lt_tmax_mean[17:20])
+sheet_names_abs_31 <- c(names(list_caste[17:20]), names(list_rel[17:20]), names(list_rural[17:20]), names(list_wealth[17:20]), names(list_access_issue_distance[17:20]), names(list_lt_tmax_mean[17:20]))
+write.xlsx(list_abs_31, here(path_out, "multcomp-abs-31.xlsx"), sheetName = sheet_names_abs_31)
+
+## For absolute value - 32 ----
+list_abs_32 <- c(list_caste[21:24], list_rel[21:24], list_rural[21:24], list_wealth[21:24], list_access_issue_distance[21:24], list_lt_tmax_mean[21:24])
+sheet_names_abs_32 <- c(names(list_caste[21:24]), names(list_rel[21:24]), names(list_rural[21:24]), names(list_wealth[21:24]), names(list_access_issue_distance[21:24]), names(list_lt_tmax_mean[21:24]))
+write.xlsx(list_abs_32, here(path_out, "multcomp-abs-32.xlsx"), sheetName = sheet_names_abs_32)
