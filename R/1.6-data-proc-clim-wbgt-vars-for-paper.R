@@ -2,13 +2,13 @@
 
 # load-packages ---- 
 print(Sys.time())
-pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, lme4, broom, broom.mixed, here)
+rm(list = ls())
+pacman::p_load(tidyverse, data.table, janitor, fst, here)
 
 # Read dataset ---- 
-rm(list = ls())
 ## First read the date column
-path_processed <- here("2-data", "2.2-processed-data")
-df_psu_temp_precip_paper <- read_fst(here(path_processed, "1.4-daily-clim-vars-long-term-by-day.fst"), as.data.table = TRUE)
+path_processed <- here(path_project, "data", "processed-data")
+df_psu_temp_precip_paper <- read_fst(here(path_processed, "1.5-daily-clim-vars-long-term-by-day.fst"), as.data.table = TRUE)
 
 ## Filter cases to 2014 onwards
 df_psu_temp_precip_paper <- df_psu_temp_precip_paper[base::`>=`(df_psu_temp_precip_paper$date, as.Date("2014-01-01")), ]
@@ -111,5 +111,5 @@ print("Harmonic heatwave vars created")
 print(Sys.time())
 
 # Save dataset ---- 
-write_fst(df_psu_temp_precip_paper, path = here(path_processed, "1.5-dhs-psu-paper.fst"))
-print("All tasks complete for 1.5")
+write_fst(df_psu_temp_precip_paper, path = here(path_processed, "1.6-dhs-psu-paper.fst"))
+print("All tasks complete for 1.6")

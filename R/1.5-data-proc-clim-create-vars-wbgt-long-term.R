@@ -6,22 +6,19 @@
 # That is, this script create variables to capture temperature extremes local to space AND time.
 
 # load-packages ---------------------------------------------------------
-pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, lme4, broom, broom.mixed, here)
-library(forecast)
-library(quantreg)
-print(Sys.time())
 rm(list = ls())
+pacman::p_load(tidyverse, data.table, janitor, fst, openxlsx, here, forecast, quantreg)
+print(Sys.time())
 
 # Constants ---------------------------------------------------------
-path_processed <- here("2-data", "2.2-processed-data")
+path_processed <- here(path_project, "data", "processed-data")
 
 # load script with functions ---------------------------------------------------------
-source(here("1-scripts", "5.4-function-for-lycday-and-harmonics.R"))
-source(here("1-scripts", "5.5-function-for-parallel-proc-quantile-reg.R"))
-
+source(here("R", "6.5-function-for-lycday-and-harmonics.R"))
+source(here("R", "6.6-function-for-parallel-proc-quantile-reg.R"))
 
 # load datasets needed for this script --------------------------------
-df_psu_temp_precip_vars_added <- read_fst(here(path_processed, "1.3-daily-temp-precip-1980-21-extracted-dhs-psu.fst"), as.data.table = T)
+df_psu_temp_precip_vars_added <- read_fst(here(path_processed, "1.5-daily-temp-precip-1980-21-extracted-dhs-psu.fst"), as.data.table = T)
 colnames(df_psu_temp_precip_vars_added)
 print("loading complete")
 print(Sys.time())
@@ -106,5 +103,5 @@ print(Sys.time())
 # Save Work ---------------------------------------------------------
 write_fst(df_psu_temp_precip_vars_added, path = here(path_processed, "1.4-daily-clim-vars-long-term-by-day.fst"))
 
-print("Script 1.4 complete")
+print("Script 1.5 complete")
 print(Sys.time())

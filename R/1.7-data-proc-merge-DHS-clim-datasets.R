@@ -1,23 +1,24 @@
 # Title: "Merge the dataset with temp vars with IR data"
 
-# Preparatory ----
-## load-packages ----- 
+# load-packages ----- 
 rm(list = ls())
-pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, lme4, broom, broom.mixed, googledrive, here)
+pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, here)
 
-## Load-datasets -----
+# set paths ----
+source(here("paths-mac.R"))
+
+## load-datasets -----
 ### IR data ------ 
-path_processed <- here("2-data", "2.2-processed-data")
-df_IR_long <- read_fst(here(path_processed, "1.1-dhs-IR-vars-created.fst"), as.data.table = TRUE)
+path_processed <- here(path_project, "data", "processed-data")
+df_IR_long <- read_fst(here(path_processed, "1.2-dhs-IR-vars-created.fst"), as.data.table = TRUE)
 colnames(df_IR_long)
 ### Remove week_of_year as it was already created in 2.2
-df_IR_long$week_of_year <- NULL
+df_IR_long$dob_week_of_year <- NULL
 
 ### Climate data ------
-df_climate_final <- read_fst(here(path_processed, "1.5-dhs-psu-paper.fst"), as.data.table = TRUE)
+df_climate_final <- read_fst(here(path_processed, "1.6-dhs-psu-paper.fst"), as.data.table = TRUE)
 
 # Merge IR and Temperature data ---- 
-
 df_paper_final <- merge(df_IR_long, df_climate_final,
                            by.x = c("psu", "dob"),
                            by.y = c("psu", "date"))
@@ -78,5 +79,5 @@ df_paper_final$mean_precip_center <- scale(df_paper_final$mean_precip, center = 
 
 # Save file ---- 
 ## Saving in RDS because saving in fst looses some of the variable labels
-saveRDS(df_paper_final, here(path_processed, "1.6-final-data-for-paper.rds"))
-print("finished processing 1.6")
+saveRDS(df_paper_final, here(path_processed, "1.7-final-data-for-paper.rds"))
+print("finished processing 1.7")
