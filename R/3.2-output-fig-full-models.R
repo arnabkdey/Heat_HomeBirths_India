@@ -10,7 +10,9 @@ library(here)
 library(extrafont)
 library(ggbreak)
 library(patchwork)
-source("paths-mac.R")
+
+# set paths ----
+source(here("paths-mac.R"))
 
 # font_import() # run only once
 # loadfonts(device="win") # run only once

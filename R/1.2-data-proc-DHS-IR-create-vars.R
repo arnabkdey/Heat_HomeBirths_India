@@ -80,7 +80,11 @@ df_IR_long <- df_IR_long |>
       TRUE ~ "SC/ST"
     )
   )
-                                               
+
+## Maternal education ---------------------------
+df_IR_long$mat_edu_level_bi <- ifelse(df_IR_long$mat_edu_level == "no education", 
+  "no education", "primary or higher")
+
 ## Women's age related variables ---------------------------
 ### Current age at interview
 df_IR_long <- df_IR_long |> 
@@ -105,6 +109,12 @@ df_IR_long <- df_IR_long |>
                       mat_age_at_birth >= 20 & mat_age_at_birth < 25  ~ "20-24",
                       mat_age_at_birth >= 25 & mat_age_at_birth < 30  ~ "25-29",
                       mat_age_at_birth >= 30 ~ "30-49"))
+
+### binary variable for age at birth
+df_IR_long <- df_IR_long |> 
+                    mutate(mat_age_at_birth_bi = case_when(
+                      mat_age_at_birth < 25  ~ "15-24",
+                      mat_age_at_birth >= 25  ~ "25-49"))                      
 
 
 ## Access to healthcare ---------------------------
@@ -180,30 +190,48 @@ df_IR_long[, media_radio := fifelse(mat_media_radio == "not at all", 0, 1)]
 df_IR_long[, media_tv := fifelse(mat_media_tv == "not at all", 0, 1)]
 df_IR_long[, media_internet := fifelse(mat_media_internet == "never", 0, 1)]
 
-# Create variables for sensitivity analysis on partial data -------------------------------------------
+### create any exposure to mass media
+df_IR_long <- df_IR_long |>
+  mutate(mat_media_exp_any = case_when(
+    media_newspaper == 1 | media_radio == 1 | media_tv == 1 | media_internet == 1 ~ "yes", 
+    is.na(media_internet) ~ "no",
+    TRUE ~ "no"
+    ))
 
-## Reasons for not delivering in institution -----------------------
-### 
-tabyl(df_IR_long, midx)
-tabyl(df_IR_long, m14)
-nrow(df_IR_long)
-df_missing_reason <- df_IR_long |> filter(is.na(m65a) & dv_home_del == 1)
-tabyl(df_missing_reason, m15) 
-tabyl(df_missing_reason, bord) 
-tabyl(df_missing_reason, m14)
-tabyl(df_missing_reason,bidx)
-tabyl(df_missing_reason, midx)
-tabyl(df_IR_long, m65a, dv_home_del) 
-tabyl(df_IR_long, m65b, dv_home_del) 
-tabyl(df_IR_long, bord) 
+tabyl(df_IR_long$mat_media_exp_any)
 
-## ANC visits ---------------------------
+## Categorize states as high, medium, low based on home-birth ----
+df_state <- df_IR_long |> 
+  dplyr::group_by(state_name) |> 
+    dplyr::summarize(home_birth_rate = mean(dv_home_del, na.rm = T)) |> 
+    dplyr::ungroup() |>
+  dplyr::mutate(state_home_birth_cat = case_when(
+    home_birth_rate < 0.1 ~ "low",
+    home_birth_rate >= 0.1 & home_birth_rate < 0.4 ~ "medium",
+    home_birth_rate >= 0.4 ~ "high"
+  )) |>
+  dplyr::select(state_name, home_birth_rate, state_home_birth_cat) 
+
+tabyl(df_state$state_home_birth_cat)
+
+## Merge state-level home-birth categories
+df_IR_long <- df_IR_long |> 
+  dplyr::left_join(df_state, by = "state_name")
+
+## Create a binary variable for home-birth rate
+df_IR_long <- df_IR_long |> 
+  dplyr::mutate(state_home_birth_bi = case_when(
+    state_home_birth_cat == "high" ~ "high",
+    state_home_birth_cat == "medium" ~ "high",
+    state_home_birth_cat == "low" ~ "low"
+  ))
 
 # Step-6: Convert variables to factor --------
 df_IR_long$psu_fac <- as.factor(df_IR_long$psu)
+df_IR_long$caseid <- as.factor(df_IR_long$caseid)
 df_IR_long$dist_name_fac <- as.factor(df_IR_long$dist_name)
 df_IR_long$state_name_fac <- as.factor(df_IR_long$state_name)
-df_IR_long$month_birth_fac <- as.factor(df_IR_long$month_birth)
+df_IR_long$month_birth_fac <- as.factor(df_IR_long$dob_month_birth)
 df_IR_long$year_birth_fac <- as.factor(df_IR_long$year_birth)
 
 # Step-7: Save datafile ----

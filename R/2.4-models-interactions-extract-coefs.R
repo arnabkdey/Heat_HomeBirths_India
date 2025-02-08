@@ -3,6 +3,10 @@ library(multcomp)
 
 rm(list = ls())
 
+# set paths ----
+source(here("paths-mac.R"))
+
+
 # Create a folder for the outputs ----
 path_out <- here("3-outputs", "models", "models-with-interaction")
 if (!dir.exists(path_out)) {

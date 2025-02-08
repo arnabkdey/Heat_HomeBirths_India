@@ -1,18 +1,13 @@
 # Library ----
-pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, lme4, broom, broom.mixed, googledrive, here)
-library(performance)
 rm(list = ls())
+pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, lme4, broom, broom.mixed, here, performance)
 
-# Create a folder for the outputs ----
-path_out <- here("3-outputs", "models", "models-no-interaction")
-if (!dir.exists(path_out)) {
-  # Create the directory if it does not exist
-  dir.create(path_out, showWarnings = TRUE, recursive = TRUE)
-}
+# set paths ----
+source(here("paths-mac.R"))
+path_outputs <- here(path_project, "outputs", "models", "full-models")
 
 # Load models ----
-path_processed <- here("2-data", "2.2-processed-data")
-model_outputs <- readRDS(here(path_processed, "2.1-models-no-interaction.rds"))
+model_outputs <- readRDS(here(path_outputs, "2.1-models-no-interaction-v5.rds"))
 print("finished loading models")
 names(model_outputs)
 
@@ -31,13 +26,6 @@ for(exposure in names(model_outputs)) {
 names_tidy_outputs <- names(tidy_outputs)
 substring <- str_sub(names_tidy_outputs, start = 1, end = 30)
 names(tidy_outputs) <- substring
-# Run only for interaction models
-# dput(names_tidy_outputs)
-# ## Create a substring 
-# # substrings <- str_extract(names_tidy_outputs, "(?<=~\\s)[^+]+")
-# substrings <- str_sub(names_tidy_outputs, start = 20, end = 40)
-# ## Assign new names 
-# names(tidy_outputs) <- substrings
 
 ## Save Tidy Outputs to separate workbooks ----- 
 ### Create a new workbook
@@ -52,7 +40,7 @@ for(exposure in names(tidy_outputs)) {
 }
 
 ## Write Step-1 output to a file
-saveWorkbook(wb, here(path_out, "models_full_95.xlsx"), overwrite = TRUE)
+saveWorkbook(wb, here(path_outputs, "models_full_v5.xlsx"), overwrite = TRUE)
 
 
 # Step-2: Consolidate coefficients for the primary exposure  in a single CSV ----
@@ -78,7 +66,7 @@ for(model_name in names(tidy_outputs)) {
 
 head(combined_exposures)
 ## Save Step-2  output to a CSV ----
-write.csv(combined_exposures, here(path_out, "models_consolidated_coefficients_95.csv"), row.names = FALSE)
+write.csv(combined_exposures, here(path_outputs, "models_consolidated_coefficients_v5.csv"), row.names = FALSE)
 
 # Step-3: Extract R2 and ICC for models ----
 ## Initialize empty lists ----- 
@@ -114,4 +102,4 @@ df_icc_r2 <- data.frame(
 )
 
 ## Save Step-3 output to a file
-write.csv(df_icc_r2, here(path_out, "model_metrics_95.csv"), row.names = FALSE)
+write.csv(df_icc_r2, here(path_out, "model_metrics_v5.csv"), row.names = FALSE)

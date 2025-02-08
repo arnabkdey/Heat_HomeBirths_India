@@ -9,3 +9,6 @@ path_wbgt_max_raw <- "~/Google Drive/Shared drives/Benmarhnia Lab/Arnab/common-d
 
 # Precipitation data
 path_precip_raw <- "~/Google Drive/Shared drives/Benmarhnia Lab/Arnab/common-datasets/climate-datasets/global/precip-chirps/"
+
+# Tmax (air temperature) data
+path_tmax_raw <- "~/Google Drive/Shared drives/Benmarhnia Lab/Arnab/common-datasets/climate-datasets/global/air-temperature-noaa/world-temp-drybulb-max/1979-2023/"

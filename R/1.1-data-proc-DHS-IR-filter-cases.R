@@ -100,7 +100,6 @@ df_dhs_IR_raw <- df_dhs_IR_raw |>
         hh_wealth_quintile_ru_og = v190a,   
         everything())
 
-colnames(df_dhs_IR_raw)
 
 # Step-3: Convert from wide to long ----
 df_IR_long <- df_dhs_IR_raw |>

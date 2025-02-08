@@ -13,6 +13,8 @@ library(patchwork)
 # font_import() # run only once
 # loadfonts(device="win") # run only once
 
+# set paths ----
+source(here("paths-mac.R"))
 
 # Function to read interaction data from excel and combine them ----
 read_excel_sheets_and_combine <- function(file_path, effect_modifier_name) {

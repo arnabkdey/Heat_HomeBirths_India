@@ -7,6 +7,10 @@ library(doParallel)
 library(foreach)
 rm(list = ls())
 
+# set paths ----
+source(here("paths-mac.R"))
+
+
 # Read datasets ----
 ## Final paper dataset
 path_processed <- here("2-data", "2.2-processed-data")
@@ -20,7 +24,8 @@ varlist_cov_base <- c("mat_age_grp_at_birth", "mat_edu_level", "month_birth_fac"
 varlist_interaction <- c("rural", "hh_caste_club", "hh_religion_bi", 
                           "hh_wealth_quintile_ru_og", 
                           "lt_tmax_mean_cat_tert_wb", 
-                          "access_issue_distance")
+                          "access_issue_distance",
+                          "state_home_birth_bi")
 
 varlist_tot <- c(varlist_cov_base, varlist_interaction)
 
@@ -31,14 +36,16 @@ varlist_exp_wb_abs <- c(
   "hotday_wb_32", "hw_wb_32_2d", "hw_wb_32_3d", "hw_wb_32_5d"
 )
 
-varlist_exp_wb_ntile_doy <- c(
-  "hotday_wb_90_doy", "hw_wb_90_doy_2d", "hw_wb_90_doy_3d", "hw_wb_90_doy_5d",
-  "hotday_wb_95_doy", "hw_wb_95_doy_2d", "hw_wb_95_doy_3d", "hw_wb_95_doy_5d",
-  "hotday_wb_97_doy", "hw_wb_97_doy_2d", "hw_wb_97_doy_3d", "hw_wb_97_doy_5d"
+varlist_exp_wb_ntile <- c(
+  "hotday_wb_90", "hw_wb_90_2d", "hw_wb_90_3d", "hw_wb_90_5d",
+  "hotday_wb_95", "hw_wb_95_2d", "hw_wb_95_3d", "hw_wb_95_5d",
+  "hotday_wb_97", "hw_wb_97_2d", "hw_wb_97_3d", "hw_wb_97_5d"
+)
+varlist_exp_db_ntile <- c(
+  "hotday_wb_90", "hw_wb_90_2d", "hw_wb_90_3d", "hw_wb_90_5d"
 )
 
-
-varlist_exp_tot <- c(varlist_exp_wb_ntile_doy, varlist_exp_wb_abs)
+varlist_exp_tot <- c(varlist_exp_wb_ntile, varlist_exp_wb_abs, varlist_exp_db_ntile)
 
 # Define your outcome variable
 outcome_var <- "dv_home_del_fac"
