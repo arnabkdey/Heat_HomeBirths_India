@@ -1,20 +1,21 @@
-# -------------------------------------------------------------------------------
+# ----------------------------------------------------------------
 # @project: Heat and Home Births in India
-# @author: Arnab K. Dey (arnabxdey@gmail.com), Anna Dimitrova
+# @author: Arnab K. Dey, Anna Dimitrova
 # @organization: Scripps Institution of Oceanography, UC San Diego
-# @description: This script processes loads relevant variables from the DHS data and filters cases for analysis
-# @date: Nov 12, 2024
+# @description: This script loads relevant variables from the DHS data and filters cases for analysis
+# @date: March 2025
 
-# load-packages ---------------------------------------------------------------
+# load-packages ----
 rm(list = ls())
 pacman::p_load(dplyr, janitor, data.table, fst, openxlsx, here)
 
-# set paths ------------------------------------------------------------------
-source(here("paths-mac.R"))
+# set paths ----
+source(here("paths_mac.R"))
 
-# Step-1: Identify variables for the paper ------------------------------------
+# Step-1: Identify variables for the paper ----
 ## Meta variables
-varlist_meta <- c("caseid", "sdist", "v005", "v008a", "v021", "v023", "v024", "v025")
+varlist_meta <- c("caseid", "sdist", "v005", "v008a", "v021", 
+    "v023", "v024", "v025")
 
 ## Birth History variables
 varlist_birth_history <- c(c(paste0("bidx_0",c(1:9))),
@@ -118,7 +119,7 @@ dput(colnames(df_IR_long))
 nrow(df_IR_long)
 sum(is.na(df_IR_long$m15))
 
-# Step-4: Create variables necessary for filtering cases -----------------------
+# Step-4: Create variables necessary for filtering cases ----
 ## date of birth and related variables 
 df_IR_long <- df_IR_long |>
     ### create UID
@@ -137,7 +138,7 @@ df_IR_long <- df_IR_long |>
 
 ## variable to identify covid period
 df_IR_long <- df_IR_long |>
-    dplyr::mutate(covid_period = ifelse(dob >= as.Date("2020-03-25"), 1, 0))
+    dplyr::mutate(covid_period = ifelse(dob >= as.Date("2020-03-25"), 1, 0)) 
 
 # Step-5: Filter cases for analysis ---- 
 ## Remove cases where birth happened under COVID
@@ -147,14 +148,9 @@ df_IR_long_filtered <- df_IR_long |> dplyr::filter(covid_period == 0)
 nrow(df_IR_long_filtered)  # 219,677; 13,243 births dropped during COVID
 
 ## remove cases when non-resident
-tabyl(df_IR_long_filtered$v135)
-df_IR_long_filtered <- df_IR_long_filtered |> dplyr::filter(v135 == "usual resident")
+df_IR_long_filtered <- df_IR_long_filtered |> 
+    dplyr::filter(v135 == "usual resident")
 nrow(df_IR_long_filtered)  # 209,643; 10,034 births dropped for non-resident
-
-## remove cases where caste is missing 
-tabyl(df_IR_long_filtered$hh_caste)
-df_IR_long_filtered <- df_IR_long_filtered |> dplyr::filter(!is.na(hh_caste))
-nrow(df_IR_long_filtered)  # 199,345; 10,298 births dropped for missing caste
 
 ## remove cases where birth happened neither in facility not at home
 tabyl(df_IR_long_filtered$m15)
@@ -162,4 +158,6 @@ df_IR_long_filtered <- df_IR_long_filtered |> dplyr::filter(m15 != "other")
 nrow(df_IR_long_filtered)  # 198,889; 456 births dropped for other reasons
 
 # Save the data
-df_IR_long_filtered |> write_fst(here(path_project, "data", "processed-data", "1.1-dhs-IR-long-raw-filtered.fst"))
+df_IR_long_filtered |> write_fst(here(
+    path_project, "data", "processed_data", 
+    "1.1.1_dhs_IR_long_raw_filtered.fst"))

@@ -12,3 +12,6 @@ path_precip_raw <- "~/Google Drive/Shared drives/Benmarhnia Lab/Arnab/common-dat
 
 # Tmax (air temperature) data
 path_tmax_raw <- "~/Google Drive/Shared drives/Benmarhnia Lab/Arnab/common-datasets/climate-datasets/global/air-temperature-noaa/world-temp-drybulb-max/1979-2023/"
+
+# Climate zones
+path_beck <- "~/Google Drive/Shared drives/Benmarhnia Lab/Arnab/common-datasets/climate-datasets/global/climate-region-maps/Beck_KG/"
