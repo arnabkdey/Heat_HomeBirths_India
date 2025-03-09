@@ -10,7 +10,7 @@ rm(list = ls())
 pacman::p_load(tidyverse, data.table, janitor, fst, here)
 
 # Set paths ----
-source(here("paths_mac.R"))
+source(here("paths.R"))
 
 # load datasets needed for this script -----
 df_psu_temp_precip_vars_added <- read_fst(here(path_project, 

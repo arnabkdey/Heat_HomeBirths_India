@@ -10,7 +10,7 @@ rm(list = ls())
 pacman::p_load(dplyr, janitor, data.table, fst, openxlsx, here)
 
 # set paths ----
-source(here("paths_mac.R"))
+source(here("paths.R"))
 
 # Step-1: Identify variables for the paper ----
 ## Meta variables

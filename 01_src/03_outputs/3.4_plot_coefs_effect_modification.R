@@ -10,7 +10,7 @@ rm(list = ls())
 pacman::p_load(tidyverse, readxl, ggpubr)
 
 # set paths ----
-source(here("paths_mac.R"))
+source(here("paths.R"))
 
 # load data ----
 ## odds ratios ----

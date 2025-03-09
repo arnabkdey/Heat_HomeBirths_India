@@ -11,7 +11,7 @@ pacman::p_load(tidyverse, here, tictoc, beepr)
 pacman::p_load(MatchIt, cobalt, sandwich, survey, geepack)
 
 # Set paths ----
-source(here("paths_mac.R"))
+source(here("paths.R"))
 
 # read datasets ----
 df_paper_final <- readRDS(here(path_project, "data", "processed_data", 

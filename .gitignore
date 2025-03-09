@@ -29,6 +29,7 @@
 
 # Path and dummy files
 dummy*.R
+paths.R
 
 # lint files
 .lintr

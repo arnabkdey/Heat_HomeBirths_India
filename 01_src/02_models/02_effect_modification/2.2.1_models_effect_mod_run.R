@@ -11,7 +11,7 @@ pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, lme4, broom
 pacman::p_load(MatchIt, cobalt, sandwich, survey, ggplot2, geepack, performance, splines)
 
 # Set paths ----
-source(here("paths_mac.R"))
+source(here("paths.R"))
 
 # read datasets ----
 df_paper_final <- readRDS(here(
@@ -139,6 +139,6 @@ for (exposure_var in varlist_exposure_all) {
 
 # Save the model results list
 model_results_list |> saveRDS(here(
-  path_project, "outputs", "models", "effect-modification",
+  path_project, "outputs", "models", "effect_modification",
   "gee_interaction_models_main.rds"))
 

@@ -1,0 +1,23 @@
+# Set default behavior to automatically normalize line endings
+* text=auto
+
+# R specific files
+*.R text
+*.Rmd text
+*.Rdata binary
+*.RDS binary
+*.rds binary
+
+# Common data files
+*.csv text
+*.txt text
+*.tsv text
+
+# Documentation
+*.md text
+*.Rproj text
+
+# Binary files
+*.png binary
+*.jpg binary
+*.pdf binary

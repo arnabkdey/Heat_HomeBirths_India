@@ -10,7 +10,7 @@ rm(list = ls())
 pacman::p_load(tidyverse, janitor, data.table, fst, openxlsx, here, mice)
 
 # set paths ----
-source(here("paths_mac.R"))
+source(here("paths.R"))
 
 # load the data ----
 df_IR_long <- read_fst(here(

@@ -1,4 +1,6 @@
-# Heatwaves and Home Births: Impact of Extreme Heat on Delivery Choices in India
+# Heatwaves and home Births: Understanding the impact of extreme heat on place of delivery in India
+
+Authors: Arnab K. Dey, Anna Dimitrova, Anita Raj, Tarik Benmarhnia
 
 This repository contains the scripts used to study the effect of extreme heat on home deliveries in India. The following sections describe the data sources used in the study and the scripts needed to replicate the analysis. 
 

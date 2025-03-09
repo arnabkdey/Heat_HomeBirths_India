@@ -10,7 +10,7 @@ rm(list = ls())
 pacman::p_load(here, readxl, dplyr, tidyverse, stringr, ggplot2, ggmap, sf, rnaturalearth, rnaturalearthdata, cowplot)
 
 # set paths ----
-source(here("paths_mac.R"))
+source(here("paths.R"))
 
 # load data ----
 df <- read_excel(here(path_project, "data",

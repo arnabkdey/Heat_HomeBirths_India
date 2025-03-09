@@ -11,7 +11,7 @@ rm(list = ls())
 pacman::p_load(tidyverse, data.table, janitor, fst, here)
 
 # set path ----
-source(here("paths_mac.R"))
+source(here("paths.R"))
 
 # Read dataset ---- 
 ## First read the data

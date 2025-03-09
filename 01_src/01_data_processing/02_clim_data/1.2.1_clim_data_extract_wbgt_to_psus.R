@@ -10,7 +10,7 @@ rm(list = ls())
 pacman::p_load(tidyverse, janitor, data.table, fst, openxlsx, here)
 
 # set paths ----
-source(here("paths_mac.R"))
+source(here("paths.R"))
 
 # load-function to extract climate data to DHS PSUs ----
 source(here("src", "01_data_processing",

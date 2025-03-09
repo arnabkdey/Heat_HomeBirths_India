@@ -11,7 +11,7 @@ pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, lme4, broom
 pacman::p_load(MatchIt, cobalt, sandwich, survey, ggplot2, geepack)
 
 # Set paths ----
-source(here("paths_mac.R"))
+source(here("paths.R"))
 
 # read datasets ----
 df_paper_final <- readRDS(here(path_project, "data", 

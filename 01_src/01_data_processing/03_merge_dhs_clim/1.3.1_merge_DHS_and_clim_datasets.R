@@ -10,7 +10,7 @@ rm(list = ls())
 pacman::p_load(tidyverse, data.table, janitor, fst, beepr, openxlsx, here)
 
 # set paths ----
-source(here("paths_mac.R"))
+source(here("paths.R"))
 
 ## load-datasets -----
 ### IR data ------ 
