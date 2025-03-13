@@ -190,7 +190,8 @@ df_IR_long_imputed <- df_IR_long_imputed |>
 
 ### relevel factors 
 df_IR_long_imputed <- df_IR_long_imputed |> 
-  dplyr::mutate(mat_birth_order = factor(mat_birth_order, levels = c("One", "Two", "Three", "Four or more")))
+  dplyr::mutate(mat_birth_order = factor(mat_birth_order, 
+    levels = c("One", "Two", "Three", "Four or more")))
 
 ## Parity (number of children) ----
 df_IR_long_imputed <- df_IR_long_imputed |>
@@ -281,4 +282,3 @@ df_IR_long_imputed$year_birth_fac <- as.factor(df_IR_long_imputed$year_birth)
 df_IR_long_imputed |> write_fst(path = here(
   path_project, "data", "processed_data", 
   "1.1.2_dhs_IR_vars_created_imp.fst"))
-

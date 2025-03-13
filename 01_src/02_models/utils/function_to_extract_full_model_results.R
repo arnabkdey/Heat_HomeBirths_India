@@ -31,7 +31,7 @@
 #'   and duration (1-5 days)
 #' - Results are sorted by tertile, threshold, and duration
 #'
-#' @importFrom tidyverse %>% 
+#' @importFrom tidyverse |> 
 #' @importFrom broom tidy
 #' @importFrom dplyr bind_rows mutate case_when arrange
 #' @importFrom stringr str_split str_extract grepl

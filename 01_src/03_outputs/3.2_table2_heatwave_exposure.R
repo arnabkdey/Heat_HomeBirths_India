@@ -15,6 +15,7 @@ source(here("paths.R"))
 # load data ----
 df_paper_final <- readRDS(here(path_project, "data", "processed_data", "1.3.1_final_data_for_paper.rds"))
 
+tabyl(df_paper_final$hh_religion)
 # set constants ----
 ## list exposure variables
 varlist_exposure_all <- c(
@@ -70,8 +71,8 @@ output_df <- output_df |>
   ))
 
 ## Get mean of cases in df_paper_final for each exposure variable using apply ----
-### Create a function to get the mean of cases for each exposure variable
-get_mean_cases <- function(exposure_var) {
+### Create a function to get the mean of cases of home births for exposure 
+get_mean_cases_hb <- function(exposure_var) {
   mean_cases <- df_paper_final |> 
     filter(.data[[exposure_var]] == 1) |> 
     pull(dv_home_del_num) |> 
@@ -80,9 +81,20 @@ get_mean_cases <- function(exposure_var) {
   return(mean_cases)
 }
 
-### Apply the function to get the mean of cases for each exposure variable
-output_df$mean_cases <- apply(output_df, 1, function(x) get_mean_cases(x[1]))
+### Create a function to get the mean of cases of the exposure variable
+get_mean_cases_exp <- function(exposure_var) {
+  # Convert factor to numeric (0/1)
+  numeric_var <- as.numeric(as.character(df_paper_final[[exposure_var]]))
+  
+  # Calculate mean (which gives proportion of 1s)
+  mean_val <- mean(numeric_var, na.rm = TRUE)
+  
+  return(mean_val)
+}
 
+### Apply the function to get the mean of cases for each exposure variable
+output_df$mean_cases <- apply(output_df, 1, function(x) get_mean_cases_exp(x[1]))
+head(output_df)
 ### conver to percent
 output_df$percent_births <- round(output_df$mean_cases * 100, 2)
 
@@ -159,4 +171,6 @@ heat_table <- table_data |>
 
 # save table ----
 gt::gtsave(heat_table, file = here(
-  path_project, "outputs", "tables", "table2_heat_exposure.png"))
+  path_project, "outputs", "tables", 
+  "table2_heat_exposure_exp.png", 
+  type = "png"))

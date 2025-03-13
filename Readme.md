@@ -14,10 +14,13 @@ Raw data for Wet Bulb Globe Temperature (WBGT) and Dry Bulb temperatures can be 
 # Results
 
 ## Spatial distribution of 85th percentile thresholds for WBGT and Dry-bulb maximum temperatures
-![Spatial distribution of percentile thresholds across DHS clusters in India](02_outputs/plot_maps_heatwave_distribution.png)
+![Spatial Plot](02_figures/plot_maps_heatwave_distribution.png)
+
+## Love plot depicting covariate balance for WBGT >= 85th percentile for 1 day
+![Love Plot](02_figures/love-alldata-hotday_wb_85.png)
 
 ## Odds Ratios and 95% CIs from the full models 
-![Full model results for multiple heatwave definitions](02_outputs/plot_full_models.png)
+![Full model](02_figures/plot_full_models.png)
 
 ## Odds Ratios and RERI (95% CIs) from effect modification analysis 
-![Effect modification analysis (WBGT_max >= 85th percentile for 4 or more days)](02_outputs/Plot_EM_wbgt.png)
+![Effect modification results](02_figures/Plot_EM_db.png)

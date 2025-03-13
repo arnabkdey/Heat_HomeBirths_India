@@ -13,18 +13,15 @@ pacman::p_load(dplyr, janitor, data.table, fst, openxlsx, here)
 source(here("paths.R"))
 
 # source functions ----
-source(here("src", "02_models", "utils", "function_to_extract_EM_results.R"))
-
+source(here("01_src", "02_models", "utils", "function_to_extract_EM_results.R"))
 
 # load data ----
 model_results_list <- readRDS(here(
-  path_project, "outputs", "models", "effect_modification", "results_main",
-  "gee_interaction_models_main.rds"))
-
+  path_project, "outputs", "models", "effect_modification", "results_suppl", 
+  "gee_interaction_models.rds"))
 
 # extract results ----
 path_out <- here(path_project, "outputs", "models", 
-  "effect_modification", "results_main")
+  "effect_modification", "results_suppl")
 
 process_models(model_results_list, path_output = path_out)
-

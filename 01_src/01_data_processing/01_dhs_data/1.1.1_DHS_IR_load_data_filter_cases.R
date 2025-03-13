@@ -161,3 +161,4 @@ nrow(df_IR_long_filtered)  # 198,889; 456 births dropped for other reasons
 df_IR_long_filtered |> write_fst(here(
     path_project, "data", "processed_data", 
     "1.1.1_dhs_IR_long_raw_filtered.fst"))
+nrow(df_IR_long_filtered)  # 209,165

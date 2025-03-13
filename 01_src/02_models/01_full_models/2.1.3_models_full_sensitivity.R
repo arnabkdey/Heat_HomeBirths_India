@@ -2,7 +2,7 @@
 # @project: Heat and Home Births in India
 # @author: Arnab K. Dey, Anna Dimitrova
 # @organization: Scripps Institution of Oceanography, UC San Diego
-# @description: This script runs the full models for the paper and extracts coefficients for the final paper.
+# @description: This script runs the full models on a filtered dataset to assess the sensitivity of the results to the place of delivery
 # @date: March 2025
 
 # Load Libraries ----
@@ -16,6 +16,11 @@ source(here("paths.R"))
 # read datasets ----
 df_paper_final <- readRDS(here(path_project, "data", "processed_data", 
   "1.3.1_final_data_for_paper.rds"))
+
+# filter cases to deliveries only at own home ----
+df_paper_final <- df_paper_final |>
+  filter(m15 != "other home" & m15 != "parents' home")
+
 
 # source functions to extract coefficients ----
 source(here("01_src", "02_models", "utils", "function_to_extract_full_model_results.R"))
@@ -232,8 +237,8 @@ for (df_idx in 1:length(names(df_effects))) {
 toc()
 
 # Get output paths
-output_rds <- here(path_project, "outputs", "models", "full_models", "models_all.rds")
-output_xlsx <- here(path_project, "outputs", "models", "full_models", "coefs_all_models.xlsx")
+output_rds <- here(path_project, "outputs", "models", "full_models", "models_all_sensi.rds")
+output_xlsx <- here(path_project, "outputs", "models", "full_models", "coefs_all_models_sensi.xlsx")
 
 # Print final summary
 cat("\n===============================================================\n")

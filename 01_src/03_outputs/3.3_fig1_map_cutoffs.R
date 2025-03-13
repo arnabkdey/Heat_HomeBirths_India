@@ -16,7 +16,7 @@ source(here("paths.R"))
 df <- read_excel(here(path_project, "data",
   "processed_data", "1.2.3_psu_cutoffs_summary_geo.xlsx"), 
   col_names = TRUE)
-
+nrow(df)
 # categorize into intervals ----
 df$db_85_cat <- cut(df$cutoff_tmax_db_85, 
                                breaks = c(-Inf, 32, 34, 36, 38, 40, Inf),  # Define interval breakpoints
@@ -72,8 +72,8 @@ plot_db <- ggplot() +
   guides(color = guide_legend(override.aes = list(size = 5))) +  # Adjust size value as needed
   
   # Labels and theme
-  labs(title = "A. Dry bulb temperature 85\u1d57\u02b0 percentile threshold",
-       x = "Longitude", y = "Latitude", color = "Dry bulb temperature (°C)") +
+  labs(title = "B. Dry Bulb Temperature 85\u1d57\u02b0 percentile threshold",
+       x = "Longitude", y = "Latitude", color = "Dry Bulb Temperature (°C)") +
   theme_minimal() +
   theme(plot.title = element_text(size = 14, face = "bold", hjust = 0)) +
   theme(plot.background = element_rect(fill = "white", color = "white"))
@@ -95,8 +95,8 @@ plot_wb <- ggplot() +
   
   
   # Labels and theme
-  labs(title = "B. Wet bulb temperature 85\u1d57\u02b0 percentile threshold",
-       x = "Longitude", y = "Latitude", color = "Wet bulb temperature (°C)") +
+  labs(title = "A. Wet Bulb Globe Temperature 85\u1d57\u02b0 percentile threshold",
+       x = "Longitude", y = "Latitude", color = "Wet Bulb Globe Temperature (°C)") +
   theme_minimal() +
   theme(plot.title = element_text(size = 14, face = "bold", hjust = 0)) +
   theme(plot.background = element_rect(fill = "white", color = "white"))
@@ -105,8 +105,8 @@ library(cowplot)
 
 # Combine the plots without individual legends ----
 combined_plot <- plot_grid(
-  plot_db,
   plot_wb,
+  plot_db,
   ncol = 2, align = "v"  # Stack vertically
 )
 

@@ -18,7 +18,7 @@ path_processed <- here(path_project, "data", "processed_data")
 df_IR_long <- read_fst(here(path_processed, "1.1.2_dhs_IR_vars_created_imp.fst"), 
   as.data.table = TRUE)
 
-### Remove week_of_year as it was already created in 2.2
+### Remove week_of_year as it was already created
 df_IR_long$dob_week_of_year <- NULL
 
 ### Climate data ------

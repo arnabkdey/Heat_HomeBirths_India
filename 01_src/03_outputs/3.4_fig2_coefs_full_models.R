@@ -19,7 +19,7 @@ data <- read_excel(here(path_project, "outputs",
 
 # data cleaning ----
 ## rename tertile to sample
-data <- data %>% 
+data <- data |> 
   rename(sample = tertile)
 
 ## Clean threshold
@@ -41,11 +41,11 @@ data$duration[data$duration=="5-day"] <- "5 days"
 
 # process data for the plots ----
 ## Dry-bulb results
-data_main_db <- data %>% 
-  #filter(sample == "alldata") %>% 
-  filter(exposure_type == "Dry Bulb") %>% 
-  arrange(duration, threshold) %>%
-  mutate(HWD = 1:35) %>%   
+data_main_db <- data |> 
+  #filter(sample == "alldata") |> 
+  filter(exposure_type == "Dry Bulb") |> 
+  arrange(duration, threshold) |>
+  mutate(HWD = 1:35) |>   
   mutate(HWD = as.factor(HWD))
 
 HWD_lbs_db <- paste0("HWD", data_main_db$HWD)
@@ -60,7 +60,7 @@ data_main_db$duration <- factor(data_main_db$duration, levels = c("1 day", "2 da
 x_max <- 1.65  # Upper limit for x-axis (which is the y-axis due to coord_flip)
 
 ### Create new variables for capped conf_high and for marking values exceeding the limit
-data_main_db <- data_main_db %>%
+data_main_db <- data_main_db |>
   mutate(
     conf_high_capped = ifelse(conf_high > x_max, x_max, conf_high),  # Cap conf_high
     exceeds_limit = conf_high > x_max  # Flag for exceeding limit
@@ -68,11 +68,11 @@ data_main_db <- data_main_db %>%
 
 
 ##  Wet-bulb results
-data_main_wb <- data %>% 
-  #filter(sample == "alldata") %>% 
-  filter(exposure_type == "Wet Bulb") %>% 
-  arrange(duration, threshold) %>%
-  mutate(HWD = 36:70) %>%   
+data_main_wb <- data |> 
+  #filter(sample == "alldata") |> 
+  filter(exposure_type == "Wet Bulb") |> 
+  arrange(duration, threshold) |>
+  mutate(HWD = 36:70) |>   
   mutate(HWD = as.factor(HWD))
 
 HWD_lbs_wb <- paste0("HWD", data_main_wb$HWD)
@@ -96,13 +96,46 @@ colors <- c(
 )
 
 # Plotting ----
+## Wet-bulb temperature plot
+plot_wb <- ggplot(data_main_wb, aes(y = HWD, x = estimate, color = threshold)) +
+  geom_vline(xintercept = 1, color = "black") +  # Reference line at 1
+  geom_pointrange(aes(xmin = conf_low, xmax = conf_high), position = position_dodge(width = 0.5), size = 0.6) +  # Error bars
+  geom_point(size = 3) +  # Points
+  scale_color_manual(values = colors) +  # Custom colors
+  facet_wrap(~ duration, scales = "free_x", nrow = 1) +  # Separate panel by threshold variable
+  labs(
+    title = "A. Wet Bulb Globe Temperature",
+    y = "",
+    x = "OR and 95% CI",
+    color = "Temperature threshold"
+  ) +
+  theme_minimal() +
+  coord_flip() +
+  xlim(0.9, 1.7) +  # Setting limits to y-axis (which is now x due to coord_flip)
+  theme(
+    plot.title = element_text(size = 12, face = "bold", hjust = 0),  # Change title size and centering
+    legend.position = "bottom",
+    legend.title = element_text(size = 10),
+    legend.text = element_text(size = 9),
+    panel.grid.minor.y = element_line(linetype = "dotted", color = "gray", size=0.4),  # Dotted major grid lines
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_line(linetype = "dotted", color = "gray", size=0.4),  # Dotted major grid lines
+    axis.text.y = element_text(size = 8.5),
+    axis.text.x = element_text(size = 7.5, angle = 45, hjust = 1),  # Rotate labels
+    axis.title.x = element_text(size = 8.5),
+    axis.title.y = element_text(size = 8.5),
+    strip.text = element_text(size = 10, face = "plain"),  # Smaller, non-bold text
+    strip.placement = "outside",  # Keeps the strips positioned outside the plot
+    strip.text.x = element_text(hjust = 0, vjust = 1)  # Move facet titles to upper-left
+  )
+
 ## Dry-bulb temperature plot
 plot_db <- ggplot(data_main_db, aes(y = HWD , x = estimate, color = threshold )) +
   geom_vline(xintercept = 1, color = "black") +  # Reference line at 1
   geom_pointrange(aes(xmin = conf_low, xmax = conf_high_capped), position = position_dodge(width = 0.5), size = 0.6) +  # Error bars
   # Add arrows for those exceeding the limit
   geom_segment(
-    data = data_main_db %>% filter(exceeds_limit),
+    data = data_main_db |> filter(exceeds_limit),
     aes(x = conf_high_capped, xend = x_max + 0.05, y = HWD, yend = HWD),
     arrow = arrow(length = unit(0.15, "cm")),
     color = "black"
@@ -111,7 +144,7 @@ plot_db <- ggplot(data_main_db, aes(y = HWD , x = estimate, color = threshold ))
   scale_color_manual(values = colors) +  # Custom colors
   facet_wrap(~ duration, scales = "free_x", nrow = 1) +  # Separate panel by threshold variable
   labs(
-    title = "A. Dry bulb temperature",
+    title = "B. Dry Bulb Temperature",
     y = "",
     x = "OR and 95% CI",
     color = "Temperature threshold"
@@ -137,38 +170,6 @@ plot_db <- ggplot(data_main_db, aes(y = HWD , x = estimate, color = threshold ))
     strip.text.x = element_text(hjust = 0, vjust = 1)  # Move facet titles to upper-left
   )
 
-## Wet-bulb temperature plot
-plot_wb <- ggplot(data_main_wb, aes(y = HWD, x = estimate, color = threshold)) +
-  geom_vline(xintercept = 1, color = "black") +  # Reference line at 1
-  geom_pointrange(aes(xmin = conf_low, xmax = conf_high), position = position_dodge(width = 0.5), size = 0.6) +  # Error bars
-  geom_point(size = 3) +  # Points
-  scale_color_manual(values = colors) +  # Custom colors
-  facet_wrap(~ duration, scales = "free_x", nrow = 1) +  # Separate panel by threshold variable
-  labs(
-    title = "B. Wet bulb temperature",
-    y = "",
-    x = "OR and 95% CI",
-    color = "Temperature threshold"
-  ) +
-  theme_minimal() +
-  coord_flip() +
-  xlim(0.9, 1.7) +  # Setting limits to y-axis (which is now x due to coord_flip)
-  theme(
-    plot.title = element_text(size = 12, face = "bold", hjust = 0),  # Change title size and centering
-    legend.position = "bottom",
-    legend.title = element_text(size = 10),
-    legend.text = element_text(size = 9),
-    panel.grid.minor.y = element_line(linetype = "dotted", color = "gray", size=0.4),  # Dotted major grid lines
-    panel.grid.major.x = element_blank(),
-    panel.grid.major.y = element_line(linetype = "dotted", color = "gray", size=0.4),  # Dotted major grid lines
-    axis.text.y = element_text(size = 8.5),
-    axis.text.x = element_text(size = 7.5, angle = 45, hjust = 1),  # Rotate labels
-    axis.title.x = element_text(size = 8.5),
-    axis.title.y = element_text(size = 8.5),
-    strip.text = element_text(size = 10, face = "plain"),  # Smaller, non-bold text
-    strip.placement = "outside",  # Keeps the strips positioned outside the plot
-    strip.text.x = element_text(hjust = 0, vjust = 1)  # Move facet titles to upper-left
-  )
 
 
 ## Extract the legend using gtable
@@ -198,8 +199,8 @@ plot_wb_no_legend <- plot_wb + theme(legend.position = "none")
 
 ## Combine the plots without individual legends
 combined_plot <- plot_grid(
-  plot_db_no_legend,
   plot_wb_no_legend,
+  plot_db_no_legend,
   ncol = 1, align = "v"  # Stack vertically
 )
 

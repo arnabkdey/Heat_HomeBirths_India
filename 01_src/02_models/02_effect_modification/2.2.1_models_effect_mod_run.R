@@ -39,10 +39,12 @@ varlist_exposure_all <- c(
   "hotday_db_95", "hw_db_95_2d", "hw_db_95_3d", "hw_db_95_4d", "hw_db_95_5d"
 )
 
+
 ## modifier variables
 modifier_vars <- c("rural", "hh_access_issue_distance", "lt_mean_wbgt_tert_psu", 
                    "state_janani_bi", "state_home_birth_bi", "mat_edu_level_bi", 
                    "hh_wealth_poorest2", "hh_religion_bi", "hh_caste_bi")
+
 
 # Prepare data ----
 ### convert all modifier variables to factors
@@ -139,6 +141,6 @@ for (exposure_var in varlist_exposure_all) {
 
 # Save the model results list
 model_results_list |> saveRDS(here(
-  path_project, "outputs", "models", "effect_modification",
-  "gee_interaction_models_main.rds"))
+  path_project, "outputs", "models", "effect_modification", "results_suppl",
+  "gee_interaction_models.rds"))
 

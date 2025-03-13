@@ -16,7 +16,7 @@ source(here("paths.R"))
 df_paper_final <- readRDS(here(path_project, "data", "processed_data", "1.3.1_final_data_for_paper.rds"))
 
 # Load function for weighted tables ----
-function_path <- here("src", "03_outputs", "utils", "function_wtd_comparegroups.R")
+function_path <- here("01_src", "03_outputs", "utils", "function_wtd_comparegroups.R")
 source(function_path)
 
 # process data ----
@@ -26,17 +26,20 @@ df_paper_final$hh_caste_club <- fct_relevel(df_paper_final$hh_caste_club, "SC", 
 
 # create weighted table ----
 ## Create list of variables
-varlist_ses <- c("mat_age_grp_at_birth", "mat_edu_level", 
-                "mat_parity_fac", "mat_birth_order", 
-                "mat_media_exp_any",
-                "hh_caste_club",
-                "hh_religion_club", "hh_access_issue_distance", 
-                "hh_wealth_quintile_ru_og", "rural")
+varlist_ses <- c("mat_age_grp_at_birth", "mat_parity_fac", "mat_birth_order", 
+                "hh_religion_club", "hh_caste_club",
+                "mat_edu_level", "mat_media_exp_any",
+                "rural", "hh_access_issue_distance", 
+                "hh_wealth_quintile_ru_og")
 
 ## Create survey object
 svy_object <- svydesign(ids = ~1,
                 data = df_paper_final,
               weights = df_paper_final$wt_final)
+
+## get overall percentage of the outcome
+tabyl(df_paper_final$dv_home_del_fac)
+svymean(~dv_home_del_num, svy_object)
 
 ## generate table
 table1 <- compareGroups_wtd(data = df_paper_final,
@@ -45,6 +48,7 @@ table1 <- compareGroups_wtd(data = df_paper_final,
                             survey_object = svy_object,
                             output_type = "full", 
                             n_digits = 1)
+
 
 # format table ----
 ## retain relevant columns
@@ -125,9 +129,9 @@ gt_table <- table1_output |>
   cols_label(
     # var_label = "Variable label",
     levels_clean = "Variable levels",
-    overall = html("Overall sample<br>N (weighted %)"),
-    fac_birth = html("Health facility-based<br>births<br>n (weighted %)"),
-    home_birth = html("Home-based<br>births<br>n (weighted %)")
+    overall = html("Overall sample<br>N = 206,462 births<br>N (weighted %)"),
+    fac_birth = html("Health facility-based<br>births<br>n = 177,352 births<br>n (weighted %)"),
+    home_birth = html("Home-based<br>births<br>n = 29,110 births<br>n (weighted %)")
   ) |>
   fmt_number(
     columns = c(overall, fac_birth, home_birth),
@@ -137,19 +141,44 @@ gt_table <- table1_output |>
   tab_footnote(
     "Note: The number of cases reported in each cell is unweighted, and the percentages were calculated using survey weights."
   ) |>
+  tab_footnote(
+    "Note: Other Religions include Sikh, Buddhist, Jain, Jewish, Parsi, and no religion"
+  ) |>
   tab_style(
   style = list(
     cell_fill(color = "#f7f7f7")
   ),
   locations = cells_row_groups()
   ) |>
-  tab_style(
+tab_style(
     style = list(
-      cell_text(weight = "bold", align = "center")
+      cell_text(weight = "bold", size = "larger", color = "black"),
+      cell_text(align = "center")
     ),
     locations = cells_column_labels(everything())
-  ) 
+  ) |>
+  # Add darker text for the body content
+  tab_style(
+    style = list(
+      cell_text(color = "black", weight = "normal")
+    ),
+    locations = cells_body()
+  ) |>
+  # Make group label text darker and bolder
+  tab_style(
+    style = list(
+      cell_text(color = "black", weight = "bold")
+    ),
+    locations = cells_row_groups()
+  )
 
-# Save the table ----
-gtsave(gt_table, here(path_project, "outputs", "tables",
-  "table1_descriptive_stats.png"))
+# Save the table with higher resolution ----
+gtsave(
+  gt_table, 
+  here(path_project, "outputs", "tables", "table1_descriptive_stats.png")
+)
+
+# save the table as an excel file ----
+write.xlsx(table1_output, 
+           file = here(path_project, "outputs", "tables", "table1_descriptive_stats.xlsx"),
+           asTable = TRUE)
