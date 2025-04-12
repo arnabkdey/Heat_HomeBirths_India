@@ -63,11 +63,11 @@ all_final_plots_wb <- plot_grid(plotlist = final_plots_wb, ncol = 3, align = "v"
   theme(plot.background = element_rect(fill = "white", color = "white"))
 
 ## Save wet bulb plot
-ggsave(here(path_project, "outputs", "figures", "Plot_EM_wbgt.png"),
+ggsave(here(path_project, "outputs", "figures", "Plot_EM_wbgt.pdf"),
        plot = all_final_plots_wb, 
-       width = 8, 
+       width = 7.5, 
        height = 8, 
-       dpi = 500)
+       dpi = 600)
 
 ## Dry bulb plots
 final_plots_db <- create_modifier_plots(df_or_db, df_reri_db, modifiers)
@@ -75,13 +75,13 @@ final_plots_db <- create_modifier_plots(df_or_db, df_reri_db, modifiers)
 ## Combine all dry bulb plots
 all_final_plots_db <- plot_grid(plotlist = final_plots_db, ncol = 3, align = "v") +
   theme(plot.background = element_rect(fill = "white", color = "white"))
-head(all_final_plots_db)
+
 ## Save dry bulb plot
-ggsave(here(path_project, "outputs", "figures", "Plot_EM_db.svg"), 
-       plot = all_final_plots_db, 
-       width = 8, 
-       height = 8, 
-       dpi = 500)
+# ggsave(here(path_project, "outputs", "figures", "Plot_EM_db.svg"), 
+#        plot = all_final_plots_db, 
+#        width = 8, 
+#        height = 8, 
+#        dpi = 600)
 
 # Save consolidated data ----
 write_csv(df_or, here(path_project, "outputs", "models", "effect_modification", "results_main", "subgroup_ORs_consolidated.csv"))

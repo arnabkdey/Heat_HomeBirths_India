@@ -216,12 +216,11 @@ final_plot <- ggdraw() +
 
 # Save the plot
 ggsave(here(
-  path_project, "outputs", "figures", "plot_full_models.png"),
+  path_project, "outputs", "figures", "plot_full_models.pdf"),
   plot = final_plot, 
-  width = 8, 
+  width = 7.5, 
   height = 6, 
-  dpi = 500,
-  bg = "white")
+  dpi = 600)
 
 
 

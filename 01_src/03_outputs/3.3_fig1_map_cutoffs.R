@@ -57,28 +57,6 @@ custom_colors <- c(
 )
 
 # Plot the data ----
-## Plot for dry bulb temperature
-plot_db <- ggplot() +
-  # Add India's polygon
-  geom_sf(data = india_boundary, fill = "darkgray", color = "darkgray", size = 0.8) +
-  
-  # Add temperature points
-  geom_point(data = df, aes(x = long, y = lat, color = db_85_cat), size = 0.005) +
-  
-  # Apply the custom color scale
-  scale_color_manual(values = custom_colors) +
- 
-   # Increase legend dot size
-  guides(color = guide_legend(override.aes = list(size = 5))) +  # Adjust size value as needed
-  
-  # Labels and theme
-  labs(title = "B. Dry Bulb Temperature 85\u1d57\u02b0 percentile threshold",
-       x = "Longitude", y = "Latitude", color = "Dry Bulb Temperature (°C)") +
-  theme_minimal() +
-  theme(plot.title = element_text(size = 14, face = "bold", hjust = 0)) +
-  theme(plot.background = element_rect(fill = "white", color = "white"))
-
-
 ## Wet bulb temperature plot
 plot_wb <- ggplot() +
   # Add India's polygon
@@ -95,26 +73,44 @@ plot_wb <- ggplot() +
   
   
   # Labels and theme
-  labs(title = "A. Wet Bulb Globe Temperature 85\u1d57\u02b0 percentile threshold",
-       x = "Longitude", y = "Latitude", color = "Wet Bulb Globe Temperature (°C)") +
+  labs(title = "A. Wet Bulb Globe Temperature 85th percentile threshold",
+     x = "Longitude", y = "Latitude", color = "Wet Bulb Globe Temperature (°C)",
+     parse = TRUE) +
   theme_minimal() +
   theme(plot.title = element_text(size = 14, face = "bold", hjust = 0)) +
   theme(plot.background = element_rect(fill = "white", color = "white"))
 
-library(cowplot)
+## Plot for dry bulb temperature
+plot_db <- ggplot() +
+  # Add India's polygon
+  geom_sf(data = india_boundary, fill = "darkgray", color = "darkgray", size = 0.8) +
+  
+  # Add temperature points
+  geom_point(data = df, aes(x = long, y = lat, color = db_85_cat), size = 0.005) +
+  
+  # Apply the custom color scale
+  scale_color_manual(values = custom_colors) +
+ 
+   # Increase legend dot size
+  guides(color = guide_legend(override.aes = list(size = 5))) +  # Adjust size value as needed
+  
+  # Labels and theme
+  labs(title = "B. Dry Bulb Temperature 85th percentile threshold",
+       x = "Longitude", y = "Latitude", color = "Dry Bulb Temperature (°C)") +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 14, face = "bold", hjust = 0)) +
+  theme(plot.background = element_rect(fill = "white", color = "white"))
 
 # Combine the plots without individual legends ----
 combined_plot <- plot_grid(
   plot_wb,
   plot_db,
-  ncol = 2, align = "v"  # Stack vertically
-)
+  ncol = 1)
 
-ggsave(here(path_project, "outputs", "figures", "plot_maps_heatwave_distribution.png"), 
+ggsave(here(path_project, "outputs", "figures", "plot_maps_heatwave_distribution.pdf"), 
   plot = combined_plot, 
-  width = 14, 
-  height = 10, 
-  dpi = 500,
-  bg = "white")
+  width = 7.5, 
+  height = 12, 
+  dpi = 600)
 
 

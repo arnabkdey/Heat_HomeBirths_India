@@ -263,6 +263,3 @@ toc()
 
 cat("\nComplete! All results saved to:", basename(output_xlsx), "\n")
 
-# Optional: add a beep to signal completion
-try(beepr::beep(sound = 'ping'), silent = TRUE)
-

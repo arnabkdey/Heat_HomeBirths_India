@@ -17,11 +17,11 @@ source(here("01_src", "02_models", "utils", "function_to_extract_EM_results.R"))
 
 # load data ----
 model_results_list <- readRDS(here(
-  path_project, "outputs", "models", "effect_modification", "results_suppl", 
+  path_outputs, "models", "effect_modification", "results_suppl", 
   "gee_interaction_models.rds"))
 
 # extract results ----
-path_out <- here(path_project, "outputs", "models", 
+path_out <- here(path_outputs, "models", 
   "effect_modification", "results_suppl")
 
 process_models(model_results_list, path_output = path_out)
