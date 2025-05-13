@@ -15,7 +15,7 @@ source(here("paths.R"))
 # load datasets needed for this script -----
 df_psu_temp_precip_vars_added <- read_fst(here(path_project, 
     "data", "processed_data",
-    "1.2.1_daily_temp_1980_21_extracted_dhs_psu.fst"), 
+    "1.2.1_daily_wbgt_tmax_1980_21_extracted_dhs_psu.fst"), 
     as.data.table = T)
 
 print("loading complete")

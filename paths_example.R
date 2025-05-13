@@ -9,8 +9,8 @@ path_outputs <- here(path_project, "outputs/")
 root_dir <- "path/to/your/common-datasets/directory" # Replace with your common datasets path
 
 ## DHS datasets
-path_dhs_india_2019 <- here(root_dir, "dhs-raw-datasets/India/2019-21/individual-recode/IAIR7EDT/")
-path_dhs_india_2019_shp <- here(root_dir, "dhs-raw-datasets/India/2019-21/geographic-data/IAGE7AFL/")
+path_dhs_india_IR <- here(root_dir, "dhs-raw-datasets/India/2019-21/individual-recode/IAIR7EDT/")
+path_dhs_india_shp <- here(root_dir, "dhs-raw-datasets/India/2019-21/geographic-data/IAGE7AFL/")
 
 ## KG Beck Climate zones
 path_beck <- here(root_dir, "climate-datasets/global/climate-region-maps/Beck_KG")

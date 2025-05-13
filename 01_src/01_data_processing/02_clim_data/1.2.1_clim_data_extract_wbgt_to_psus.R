@@ -32,7 +32,7 @@ rm(df_psu_tmax_wb)
 
 print("finished Step-2a: tmax-wb")
 
-## Tmax - air temperature
+## Tmax - air temperature (NOAA)
 df_psu_tmax <- merge_dhs_climate(path = here(path_tmax_raw), 
   clim_var = "max_temp")
 write_fst(df_psu_tmax, path = here(path_project, "data", 
@@ -40,6 +40,7 @@ write_fst(df_psu_tmax, path = here(path_project, "data",
 rm(df_psu_tmax)
 print("finished Step-2b: tmax")
 
+## Tmax - air temperature (ERA5)
 # step-3: merge all the datasets ----
 rm(list = ls())
 ## read Tmax - WB

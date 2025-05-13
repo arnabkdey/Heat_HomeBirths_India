@@ -8,7 +8,7 @@
 # load-packages ---- 
 print(Sys.time())
 rm(list = ls())
-pacman::p_load(tidyverse, data.table, janitor, fst, here)
+pacman::p_load(tidyverse, data.table, janitor, fst, here, sf, writexl)
 
 # set path ----
 source(here("paths.R"))
