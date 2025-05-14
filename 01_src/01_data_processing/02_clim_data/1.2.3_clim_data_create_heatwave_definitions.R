@@ -15,7 +15,7 @@ source(here("paths.R"))
 
 # Read dataset ---- 
 ## First read the data
-df_psu_temp_precip_paper <- read_fst(path = here(path_project, "data", "processed_data", 
+df_psu_temp_precip_paper <- read_fst(path = here(path_processed, 
         "1.2.2_clim_data_LT_trunc_2014_onwards.fst"), 
         as.data.table = T)
 print("Data loaded")
@@ -24,17 +24,17 @@ print(Sys.time())
 # Step-1: Create terciles ---- 
 ## Long-term Mean by PSU ----- 
 ### Get unique PSUs with both temperature variables
-psu_temps <- unique(df_psu_temp_precip_paper[, .(psu, lt_mean_wbgt_max_psu, lt_mean_db_max_psu)])
+psu_temps <- unique(df_psu_temp_precip_paper[, .(psu, lt_mean_tmax_wbgt_psu, lt_mean_tmax_db_era5_psu)])
 
 ### Create tertiles for WBGT
-psu_temps[, lt_mean_wbgt_tert_psu := cut(lt_mean_wbgt_max_psu, 
-                                        breaks = quantile(lt_mean_wbgt_max_psu, probs = seq(0, 1, 1/3)), 
+psu_temps[, lt_mean_wbgt_tert_psu := cut(lt_mean_tmax_wbgt_psu, 
+                                        breaks = quantile(lt_mean_tmax_wbgt_psu, probs = seq(0, 1, 1/3)), 
                                         labels = 1:3, 
                                         include.lowest = TRUE)]
 
 ### Create tertiles for dry bulb temperature
-psu_temps[, lt_mean_db_tert_psu := cut(lt_mean_db_max_psu, 
-                                      breaks = quantile(lt_mean_db_max_psu, probs = seq(0, 1, 1/3)), 
+psu_temps[, lt_mean_db_tert_psu := cut(lt_mean_tmax_db_era5_psu, 
+                                      breaks = quantile(lt_mean_tmax_db_era5_psu, probs = seq(0, 1, 1/3)), 
                                       labels = 1:3, 
                                       include.lowest = TRUE)]
 
@@ -46,41 +46,17 @@ df_psu_temp_precip_paper <- merge(df_psu_temp_precip_paper,
 print("PSU terciles created - Mean")
 print(Sys.time())
 
-## Long-term median by PSU -----
-# Get unique PSUs with both median temperature variables
-psu_medians <- unique(df_psu_temp_precip_paper[, .(psu, lt_median_wbgt_max_psu, lt_median_db_max_psu)])
-
-# Create tertiles for WBGT medians
-psu_medians[, lt_median_wbgt_tert_psu := cut(lt_median_wbgt_max_psu, 
-                                           breaks = quantile(lt_median_wbgt_max_psu, probs = seq(0, 1, 1/3)), 
-                                           labels = 1:3, 
-                                           include.lowest = TRUE)]
-
-# Create tertiles for dry bulb medians (assuming lt_median_db_max_psu is the variable name, not lt_median_db_tert_psu)
-psu_medians[, lt_median_db_tert_psu := cut(lt_median_db_max_psu, 
-                                         breaks = quantile(lt_median_db_max_psu, probs = seq(0, 1, 1/3)), 
-                                         labels = 1:3, 
-                                         include.lowest = TRUE)]
-
-# Join back to main dataset
-df_psu_temp_precip_paper <- merge(df_psu_temp_precip_paper, 
-                                psu_medians[, .(psu, lt_median_wbgt_tert_psu, lt_median_db_tert_psu)], 
-                                by = "psu")
-
-print("PSU terciles created - Median")
-print(Sys.time())
-
 # Step-2: Create extreme heat variables based on n-tiles -----
 ## For wetbulb (wb)  -----
 df_psu_temp_precip_paper <- df_psu_temp_precip_paper[
         ## Identify extreme heat days
-        , hotday_wb_80 := ifelse(max_temp_wb >= cutoff_tmax_wb_80, 1, 0)][
-        , hotday_wb_825 := ifelse(max_temp_wb >= cutoff_tmax_wb_825, 1, 0)][
-        , hotday_wb_85 := ifelse(max_temp_wb >= cutoff_tmax_wb_85, 1, 0)][
-        , hotday_wb_875 := ifelse(max_temp_wb >= cutoff_tmax_wb_875, 1, 0)][
-        , hotday_wb_90 := ifelse(max_temp_wb >= cutoff_tmax_wb_90, 1, 0)][
-        , hotday_wb_925 := ifelse(max_temp_wb >= cutoff_tmax_wb_925, 1, 0)][
-        , hotday_wb_95 := ifelse(max_temp_wb >= cutoff_tmax_wb_95, 1, 0)][
+        , hotday_wb_80 := ifelse(tmax_wbgt >= cutoff_tmax_wbgt_80, 1, 0)][
+        , hotday_wb_825 := ifelse(tmax_wbgt >= cutoff_tmax_wbgt_825, 1, 0)][
+        , hotday_wb_85 := ifelse(tmax_wbgt >= cutoff_tmax_wbgt_85, 1, 0)][
+        , hotday_wb_875 := ifelse(tmax_wbgt >= cutoff_tmax_wbgt_875, 1, 0)][
+        , hotday_wb_90 := ifelse(tmax_wbgt >= cutoff_tmax_wbgt_90, 1, 0)][
+        , hotday_wb_925 := ifelse(tmax_wbgt >= cutoff_tmax_wbgt_925, 1, 0)][
+        , hotday_wb_95 := ifelse(tmax_wbgt >= cutoff_tmax_wbgt_95, 1, 0)][
         ## Identify consecutive days of extreme heat
         , consec_days_wb_80 := ifelse(hotday_wb_80 == 1, 1:.N, 0L), by = rleid(hotday_wb_80)][
         , consec_days_wb_825 := ifelse(hotday_wb_825 == 1, 1:.N, 0L), by = rleid(hotday_wb_825)][
@@ -132,13 +108,13 @@ print(Sys.time())
 ## For drybulb (db)  -----
 df_psu_temp_precip_paper <- df_psu_temp_precip_paper[
         ## Identify extreme heat days
-        , hotday_db_80 := ifelse(max_temp >= cutoff_tmax_db_80, 1, 0)][
-        , hotday_db_825 := ifelse(max_temp >= cutoff_tmax_db_825, 1, 0)][
-        , hotday_db_85 := ifelse(max_temp >= cutoff_tmax_db_85, 1, 0)][
-        , hotday_db_875 := ifelse(max_temp >= cutoff_tmax_db_875, 1, 0)][
-        , hotday_db_90 := ifelse(max_temp >= cutoff_tmax_db_90, 1, 0)][
-        , hotday_db_925 := ifelse(max_temp >= cutoff_tmax_db_925, 1, 0)][
-        , hotday_db_95 := ifelse(max_temp >= cutoff_tmax_db_95, 1, 0)][
+        , hotday_db_80 := ifelse(tmax_db_era5 >= cutoff_tmax_db_era5_80, 1, 0)][
+        , hotday_db_825 := ifelse(tmax_db_era5 >= cutoff_tmax_db_era5_825, 1, 0)][
+        , hotday_db_85 := ifelse(tmax_db_era5 >= cutoff_tmax_db_era5_85, 1, 0)][
+        , hotday_db_875 := ifelse(tmax_db_era5 >= cutoff_tmax_db_era5_875, 1, 0)][
+        , hotday_db_90 := ifelse(tmax_db_era5 >= cutoff_tmax_db_era5_90, 1, 0)][
+        , hotday_db_925 := ifelse(tmax_db_era5 >= cutoff_tmax_db_era5_925, 1, 0)][
+        , hotday_db_95 := ifelse(tmax_db_era5 >= cutoff_tmax_db_era5_95, 1, 0)][
         ## Identify consecutive days of extreme heat
         , consec_days_db_80 := ifelse(hotday_db_80 == 1, 1:.N, 0L), by = rleid(hotday_db_80)][
         , consec_days_db_825 := ifelse(hotday_db_825 == 1, 1:.N, 0L), by = rleid(hotday_db_825)][
@@ -186,8 +162,7 @@ df_psu_temp_precip_paper <- df_psu_temp_precip_paper[
 
 # Save dataset ---- 
 df_psu_temp_precip_paper |> write_fst(
-        path = here(path_project, "data", 
-        "processed_data", "1.2.3_clim_data_vars.fst"))
+        path = here(path_processed, "1.2.3_clim_data_vars.fst"))
 nrow(df_psu_temp_precip_paper)
 print("All tasks complete for 1.2.3")
 
@@ -203,15 +178,14 @@ df_dhs_geo_raw <- read_sf(here(path_dhs_india_shp, "IAGE7AFL.shp"))
 
 ## rename variables 
 df_dhs_geo_raw <- df_dhs_geo_raw |> 
+  as.data.table() |>
   dplyr::select(psu = DHSCLUST, 
     lat = LATNUM, long = LONGNUM) |>
-  as.data.table() |>
   mutate(psu = as.factor(psu))
 
 ## merge datasets ----
 df_merged <- merge(df_dhs_geo_raw, df_cutoffs_summary, by = "psu")
 
 # save dataset ----
-writexl::write_xlsx(df_merged, here(path_project, 
-        "data", "processed_data", 
+writexl::write_xlsx(df_merged, here(path_processed, 
         "1.2.3_psu_cutoffs_summary_geo.xlsx"))
