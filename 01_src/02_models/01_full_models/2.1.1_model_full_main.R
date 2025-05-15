@@ -42,9 +42,6 @@ varlist_exposure_all <- c(
   "hotday_db_925", "hw_db_925_2d", "hw_db_925_3d", "hw_db_925_4d", "hw_db_925_5d",
   "hotday_db_95", "hw_db_95_2d", "hw_db_95_3d", "hw_db_95_4d", "hw_db_95_5d")
 
-varlist_exposure_all <- c("hotday_wb_80", "hw_wb_80_2d")
-
-
 ## Define covariates for direct matching ----
 covariates_all <- c("mat_edu_level", "mat_age_grp_at_birth", 
                 "mat_parity_fac", "mat_birth_order", 

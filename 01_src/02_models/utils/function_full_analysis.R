@@ -69,7 +69,7 @@ run_full_analysis <- function(data,
     
     # Calculate IPTW weights
     cat("  - Calculating IPTW weights...\n")
-    data_weighted <- function_iptw_weights(data, exposure_var, covariates, cluster_var, trim_quantiles)
+    data_weighted <- function_iptw_weights(data, exposure_var, covariates, trim_quantiles)
     
     if (is.null(data_weighted)) {
       warning(paste("Failed to calculate weights for", exposure_var))
