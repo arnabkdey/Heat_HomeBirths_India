@@ -1,9 +1,8 @@
 # Function to calculate IPTW weights
-function_iptw_weights <- function(data, exposure_var, covariates, cluster_var) {
+function_iptw_weights <- function(data, exposure_var, covariates, trim_quantiles = c(0.01, 0.99)) {
   # Fit logistic regression model for propensity scores
   ps_formula <- as.formula(paste(exposure_var, "~", 
-                                paste(covariates, collapse = " + "), 
-                                "+", cluster_var))
+                                paste(covariates, collapse = " + ")))
   
   ps_model <- tryCatch({
     glm(ps_formula, data = data, family = binomial(link = "logit"))
@@ -19,8 +18,8 @@ function_iptw_weights <- function(data, exposure_var, covariates, cluster_var) {
   # Calculate propensity scores
   data$ps_score <- predict(ps_model, type = "response")
   
-  # Trim propensity scores
-  ps_quantiles <- quantile(data$ps_score, c(0.01, 0.99), na.rm = TRUE)
+  # Trim propensity scores using user-specified quantiles
+  ps_quantiles <- quantile(data$ps_score, trim_quantiles, na.rm = TRUE)
   data$ps_score_trimmed <- ifelse(
     data$ps_score < ps_quantiles[1], 
     ps_quantiles[1], 
